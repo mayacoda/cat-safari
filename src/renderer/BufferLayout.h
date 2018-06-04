@@ -36,9 +36,9 @@ public:
         push(GL_UNSIGNED_INT, count, GL_FALSE);
     }
 
-    inline const std::vector<LayoutElements> getElements() const { return m_elements; }
+    const std::vector<LayoutElements> getElements() const { return m_elements; }
 
-    inline unsigned int getStride() const { return m_stride; }
+    unsigned int getStride() const { return m_stride; }
 };
 
 

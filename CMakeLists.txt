@@ -1,18 +1,25 @@
 cmake_minimum_required(VERSION 3.9)
 project(safari)
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 98)
 
 add_executable(safari
         src/main.cpp
-        src/util/fileUtil.cpp
-        src/util/GL.cpp
+        lib/stb_image.cpp
+        lib/glm.h
+        src/models/Model.cpp
         src/renderer/VertexBuffer.cpp
         src/renderer/IndexBuffer.cpp
         src/renderer/VertexArray.cpp
         src/renderer/BufferLayout.cpp
         src/renderer/Renderer.cpp
-        src/shaders/shaderLoader.cpp)
+        src/shaders/shaderLoader.cpp
+        src/shaders/Shader.cpp
+        src/texture/Texture.cpp
+        src/util/fileUtil.cpp
+        src/util/GL.cpp
+        src/world/Entity.cpp
+        )
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

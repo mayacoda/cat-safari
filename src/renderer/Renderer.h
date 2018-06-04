@@ -3,8 +3,21 @@
 #define SAFARI_RENDERER_H
 
 
-class Renderer {
+#include <GL/glew.h>
+#include "VertexArray.h"
+#include "IndexBuffer.h"
+#include "../shaders/Shader.h"
+#include "../models/Model.h"
 
+class Renderer {
+public:
+    void init() const;
+
+    void prepare() const;
+
+    void render(const VertexArray &va, const IndexBuffer &ib, const Shader &shader) const;
+
+    void render(const Model &model) const;
 };
 
 

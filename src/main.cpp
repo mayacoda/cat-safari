@@ -1,11 +1,12 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "shaders/shaderLoader.h"
-#include "util/GL.h"
 #include "renderer/VertexBuffer.h"
 #include "renderer/IndexBuffer.h"
 #include "renderer/VertexArray.h"
+#include "shaders/Shader.h"
+#include "renderer/Renderer.h"
+#include "texture/Texture.h"
 
 #define DEBUG true
 
@@ -28,17 +29,19 @@ int main() {
 
     glewInit();
 
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
+    Texture texture("./res/textures/flare.png");
+    texture.bind();
 
-    GLuint shaderProgram = loadShader("basic", "basic");
+    Shader shader("basic", "basic");
+    shader.bind();
+
+    shader.setUniform1i("u_texture", 0);
 
     GLfloat vertices[] = {
-            -0.5f, -0.5f,
-            0.5f, -0.5f,
-            0.5f, 0.5f,
-            -0.5f, 0.5f,
+            -0.5f, -0.5f, 0.0f, 0.0f,
+            0.5f, -0.5f, 1.0f, 0.0f,
+            0.5f, 0.5f, 1.0f, 1.0f,
+            -0.5f, 0.5f, 0.0f, 1.0f,
     };
 
     unsigned int indices[] = {
@@ -48,26 +51,26 @@ int main() {
 
     VertexArray va;
 
-    VertexBuffer vb(vertices, 4 * 2 * sizeof(float));
+    VertexBuffer vb(vertices, 4 * 4 * sizeof(float));
 
     BufferLayout layout;
+    layout.pushFloat(2);
     layout.pushFloat(2);
     va.addBuffer(vb, layout);
 
     IndexBuffer ib(indices, 6);
 
-
-    float g = 0;
+    float g   = 0;
     float inc = 0.01f;
 
-    int location = glGetUniformLocation(shaderProgram, "u_color");
-    ASSERT(location != -1);
-    glUniform4f(location, 0.3f, g, 0.3f, 1.0f);
+    vb.unbind();
+    shader.unbind();
+    va.unbind();
+    ib.unbind();
 
-    debug(glBindVertexArray(0));
-    debug(glUseProgram(0));
-    debug(glBindBuffer(GL_ARRAY_BUFFER, 0));
-    debug(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
+    Renderer renderer;
+
+    renderer.init();
 
     // Game loop
     while (!glfwWindowShouldClose(window)) {
@@ -78,22 +81,12 @@ int main() {
         if (g > 1 || g < 0) inc = -inc;
         g += inc;
 
-        // Render
-        // Clear the colorbuffer
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        renderer.prepare();
 
-        // Draw our first triangle
-        debug(glUseProgram(shaderProgram));
-        debug(glUniform4f(location, 0.1f, g, 0.5f, 1.0f));
+        shader.bind();
+        shader.setUniform4f("u_color", 0.3f, 0, g, 1.0f);
 
-        va.bind();
-        ib.bind();
-
-
-        debug(glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr));
-
-        glBindVertexArray(0);
+        renderer.render(va, ib, shader);
 
         // Swap the screen buffers
         glfwSwapBuffers(window);
