@@ -16,6 +16,9 @@ Texture::Texture(const std::string &path) : m_textureId(0),
 
     stbi_set_flip_vertically_on_load(1);
     m_buffer = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
+    if (!m_buffer) {
+        std::cout << "[Texture::Texture] Cannot open texture file: " << path << std::endl;
+    }
 
     debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
@@ -34,12 +37,12 @@ Texture::Texture(const std::string &path) : m_textureId(0),
 
 Texture::~Texture() {
     debug(glDeleteTextures(1, &m_textureId));
+    std::cout << "[Texture::~Texture]" << std::endl;
 }
 
 void Texture::bind(unsigned int slot) const {
     debug(glActiveTexture(GL_TEXTURE0 + slot));
     debug(glBindTexture(GL_TEXTURE_2D, m_textureId));
-
 }
 
 void Texture::unbind() const {

@@ -8,16 +8,20 @@ add_executable(safari
         lib/stb_image.cpp
         lib/glm.h
         src/models/Model.cpp
+        src/models/TexturedModel.cpp
         src/renderer/VertexBuffer.cpp
         src/renderer/IndexBuffer.cpp
         src/renderer/VertexArray.cpp
         src/renderer/BufferLayout.cpp
         src/renderer/Renderer.cpp
+        src/shaders/StaticShader.cpp
         src/shaders/shaderLoader.cpp
         src/shaders/Shader.cpp
         src/texture/Texture.cpp
         src/util/fileUtil.cpp
         src/util/GL.cpp
+        src/util/geometry.cpp
+        src/world/Camera.cpp
         src/world/Entity.cpp
         )
 

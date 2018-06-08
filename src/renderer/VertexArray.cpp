@@ -7,6 +7,7 @@ VertexArray::VertexArray() {
 
 VertexArray::~VertexArray() {
     debug(glDeleteVertexArrays(1, &m_vaoId));
+    std::cout << "[VertexArray::~VertexArray]" << std::endl;
 }
 
 void VertexArray::addBuffer(const VertexBuffer &vb, const BufferLayout &layout) {

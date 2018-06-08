@@ -3,6 +3,9 @@
 #define SAFARI_ENTITY_H
 
 
+#include <glm/vec3.hpp>
+#include "../models/TexturedModel.h"
+
 class Entity {
 private:
     int m_id;
@@ -12,13 +15,52 @@ private:
         return id++;
     }
 
-    // position
+    TexturedModel m_model;
 
-    // bounding box
+    // position
+    glm::vec3 m_pos;
 
     // rotation
+    glm::vec3 m_rot;
 
+    // scale
+    float m_scale;
 
+public:
+    Entity(const TexturedModel &m_model,
+           const glm::vec3 &m_pos,
+           const glm::vec3 &m_rot,
+           float m_scale) : m_model(m_model),
+                            m_pos(m_pos),
+                            m_rot(m_rot),
+                            m_scale(m_scale) {
+        m_id = generateId();
+    }
+
+    void increasePosition(float dx, float dy, float dz) {
+        m_pos += glm::vec3(dx, dy, dz);
+    }
+
+    void increaseRotation(float dx, float dy, float dz) {
+        m_rot += glm::vec3(dx, dy, dz);
+    }
+
+    const Model &getModel() const { return m_model; }
+
+    const glm::vec3 &getPos() const { return m_pos; }
+
+    const glm::vec3 &getRotation() const { return m_rot; }
+
+    const float getScale() const {
+        return m_scale;
+    }
+
+    Entity(const TexturedModel &model) : m_model(model),
+                                         m_pos(glm::vec3(0, 0, 0)),
+                                         m_rot(glm::vec3(0, 0, 0)),
+                                         m_scale(1.0f) {
+        m_id = generateId();
+    }
 };
 
 

@@ -12,6 +12,7 @@ IndexBuffer::IndexBuffer(const unsigned int* data, unsigned int count) : m_count
 
 IndexBuffer::~IndexBuffer() {
     debug(glDeleteBuffers(1, &m_vboId));
+    std::cout << "[IndexBuffer::~IndexBuffer]" << std::endl;
 }
 
 void IndexBuffer::bind() const {

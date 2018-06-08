@@ -5,12 +5,14 @@
 
 #include <string>
 #include <unordered_map>
+#include <glm/fwd.hpp>
 
 class Shader {
 private:
     unsigned int m_shaderId;
     std::unordered_map<std::string, int> m_uniformCache;
 
+protected:
     int getUniformLocation(const std::string& name);
 
 public:
@@ -24,6 +26,10 @@ public:
     void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
 
     void setUniform1i(const std::string& name, int v);
+
+    void setUniform3f(const std::string &name, glm::vec3 vec3);
+
+    void setUniformMatrix4(const std::string &name, glm::mat4 mat);
 };
 
 
