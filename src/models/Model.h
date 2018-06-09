@@ -6,6 +6,7 @@
 #include "../shaders/Shader.h"
 #include "../renderer/VertexArray.h"
 #include "../renderer/IndexBuffer.h"
+#include "../texture/Texture.h"
 
 class Model {
 private:
@@ -20,9 +21,13 @@ public:
           unsigned int* indices,
           unsigned int count);
 
-    const VertexArray& getVertexArray() const { return m_va; }
+    const VertexArray &getVertexArray() const { return m_va; }
 
-    const IndexBuffer& getIndexBuffer() const { return m_ib; }
+    const IndexBuffer &getIndexBuffer() const { return m_ib; }
+
+    virtual Texture &getTexture() = 0;
+
+    virtual const Texture &getTexture() const = 0;
 
     virtual void render() const;
 };

@@ -5,6 +5,13 @@
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
 
+void processVertex(const std::string &vertexData,
+                   std::vector<unsigned int> &indices,
+                   std::vector<glm::vec3> vertices,
+                   std::vector<glm::vec2> textures,
+                   std::vector<glm::vec3> normals,
+                   float bufferData[]);
+
 std::string getFileContents(const std::string &filePath) {
     std::ifstream inFile(filePath);
     if (!inFile.is_open()) {
@@ -16,10 +23,10 @@ std::string getFileContents(const std::string &filePath) {
     return stream.str();
 }
 
-TexturedModel* loadObjModel(const std::string &fileName) {
-    std::ifstream inFile("./res/models/" + fileName + ".obj");
+TexturedModel* loadObjModel(const std::string &modelPath, const std::string &texturePath) {
+    std::ifstream inFile("./res/models/" + modelPath + ".obj");
     if (!inFile.is_open()) {
-        throw std::runtime_error("[loadObjModel]: Unable to OBJ file: " + fileName);
+        throw std::runtime_error("[loadObjModel]: Unable to OBJ file: " + modelPath);
     }
 
     bool shouldInitializeVertices = true;
@@ -71,15 +78,15 @@ TexturedModel* loadObjModel(const std::string &fileName) {
                 shouldInitializeVertices = false;
 
                 if (vertices.empty()) {
-                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have vertices!");
+                    throw std::runtime_error("[loadObjModel]: Model \"" + modelPath + "\" doesn't have vertices!");
                 }
 
                 if (textures.empty()) {
-                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have textures!");
+                    throw std::runtime_error("[loadObjModel]: Model \"" + modelPath + "\" doesn't have textures!");
                 }
 
                 if (normals.empty()) {
-                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have normals!");
+                    throw std::runtime_error("[loadObjModel]: Model \"" + modelPath + "\" doesn't have normals!");
                 }
 
 
@@ -98,7 +105,7 @@ TexturedModel* loadObjModel(const std::string &fileName) {
 
     inFile.close();
 
-    auto* texture = new Texture("./res/textures/" + fileName + ".png");
+    auto* texture = new Texture("./res/textures/" + texturePath + ".png");
     texture->bind();
 
     auto* va = new VertexArray();
@@ -115,6 +122,10 @@ TexturedModel* loadObjModel(const std::string &fileName) {
     auto* pointersModel = new TexturedModel(*va, *ib, *texture);
 
     return pointersModel;
+}
+
+TexturedModel* loadObjModel(const std::string &fileName) {
+    return loadObjModel(fileName, fileName);
 }
 
 void processVertex(const std::string &input,

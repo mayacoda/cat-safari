@@ -8,6 +8,10 @@ TexturedModel::TexturedModel(
                                                          m_texture(m_texture) {}
 
 
+Texture &TexturedModel::getTexture() {
+    return m_texture;
+}
+
 const Texture &TexturedModel::getTexture() const {
     return m_texture;
 }

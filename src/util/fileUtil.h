@@ -11,11 +11,8 @@ std::string getFileContents(const std::string& filePath);
 
 TexturedModel* loadObjModel(const std::string& filePath);
 
-void processVertex(const std::string &vertexData,
-                   std::vector<unsigned int> &indices,
-                   std::vector<glm::vec3> vertices,
-                   std::vector<glm::vec2> textures,
-                   std::vector<glm::vec3> normals,
-                   float bufferData[]);
+TexturedModel* loadObjModel(const std::string& modelPath, const std::string& texturePath);
+
+
 
 #endif //SAFARI_FILEUTILITY_H

@@ -58,3 +58,8 @@ void Shader::setUniform1i(const std::string &name, int v) {
     int location = getUniformLocation(name);
     debug(glUniform1i(location, v));
 }
+
+void Shader::setUniform1f(const std::string &name, float v) {
+    int location = getUniformLocation(name);
+    debug(glUniform1f(location, v));
+}

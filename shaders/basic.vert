@@ -7,6 +7,7 @@ layout (location = 2) in vec3 normal;
 out vec2 v_texture;
 out vec3 v_surfaceNormal;
 out vec3 v_toLightVector;
+out vec3 v_toCameraVector;
 
 uniform mat4 u_transformationMatrix;
 uniform mat4 u_projectionMatrix;
@@ -22,6 +23,10 @@ void main() {
 
     v_texture = texCoord;
 
+    // diffused lighting
     v_surfaceNormal = (u_transformationMatrix * vec4(normal, 0.0)).xyz;
     v_toLightVector = u_lightPosition - worldPosition.xyz;
+
+    //specular lighting
+    v_toCameraVector = (inverse(u_viewMatrix) * vec4(0, 0, 0, 0)).xyz - worldPosition.xyz;
 }

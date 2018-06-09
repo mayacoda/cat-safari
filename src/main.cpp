@@ -38,94 +38,17 @@ int main() {
     glewExperimental = GL_TRUE;
     glewInit();
 
-    GLfloat vertices[] = {
-            -0.5f, 0.5f, -0.5f, 0, 0, 0, 0, 0,
-            -0.5f, -0.5f, -0.5f, 0, 1, 0, 0, 0,
-            0.5f, -0.5f, -0.5f, 1, 1, 0, 0, 0,
-            0.5f, 0.5f, -0.5f, 1, 0, 0, 0, 0,
-            -0.5f, 0.5f, 0.5f, 0, 0, 0, 0, 0,
-            -0.5f, -0.5f, 0.5f, 0, 1, 0, 0, 0,
-            0.5f, -0.5f, 0.5f, 1, 1, 0, 0, 0,
-            0.5f, 0.5f, 0.5f, 1, 0, 0, 0, 0,
-            0.5f, 0.5f, -0.5f, 0, 0, 0, 0, 0,
-            0.5f, -0.5f, -0.5f, 0, 1, 0, 0, 0,
-            0.5f, -0.5f, 0.5f, 1, 1, 0, 0, 0,
-            0.5f, 0.5f, 0.5f, 1, 0, 0, 0, 0,
-            -0.5f, 0.5f, -0.5f, 0, 0, 0, 0, 0,
-            -0.5f, -0.5f, -0.5f, 0, 1, 0, 0, 0,
-            -0.5f, -0.5f, 0.5f, 1, 1, 0, 0, 0,
-            -0.5f, 0.5f, 0.5f, 1, 0, 0, 0, 0,
-            -0.5f, 0.5f, 0.5f, 0, 0, 0, 0, 0,
-            -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 0,
-            0.5f, 0.5f, -0.5f, 1, 1, 0, 0, 0,
-            0.5f, 0.5f, 0.5f, 1, 0, 0, 0, 0,
-            -0.5f, -0.5f, 0.5f, 0, 0, 0, 0, 0,
-            -0.5f, -0.5f, -0.5f, 0, 1, 0, 0, 0,
-            0.5f, -0.5f, -0.5f, 1, 1, 0, 0, 0,
-            0.5f, -0.5f, 0.5f, 1, 0, 0, 0
-
-    };
-
-    unsigned int indices[] = {
-            0, 1, 3,
-            3, 1, 2,
-            4, 5, 7,
-            7, 5, 6,
-            8, 9, 11,
-            11, 9, 10,
-            12, 13, 15,
-            15, 13, 14,
-            16, 17, 19,
-            19, 17, 18,
-            20, 21, 23,
-            23, 21, 22
-    };
-
     Shader shader("basic", "basic");
 
     // READING FROM FILE ======================================= WORKS!!
-    TexturedModel *flare = loadObjModel("stall");
+    TexturedModel *flare = loadObjModel("stall", "stallreal");
+    Texture &texture = flare->getTexture();
+
+    texture.setShineDamper(5);
+    texture.setReflectivity(2);
+
+
     Entity entityFromFile = Entity(*flare);
-
-    // FROM MAIN FUNCTION ON STACK ============================== WORKS
-
-    Texture texture("./res/textures/flare.png");
-    texture.bind();
-
-    VertexArray va;
-
-    VertexBuffer vb(vertices, sizeof(vertices));
-
-    BufferLayout layout;
-    layout.pushFloat(3, "position");
-    layout.pushFloat(2, "textureCoords");
-    layout.pushFloat(3, "normals");
-    va.addBuffer(vb, layout);
-
-    IndexBuffer ib(indices, sizeof(indices) / sizeof(unsigned int));
-
-    TexturedModel model  = TexturedModel(va, ib, texture);
-    Entity entity = Entity(model);
-
-    // POINTERS ============================================= WORKS
-
-    auto * texture2 = new Texture("./res/textures/flare.png");
-    texture2->bind();
-
-    auto* va2 = new VertexArray();
-    auto * vb1 = new VertexBuffer(vertices, sizeof(vertices));
-
-    BufferLayout layout1;
-    layout1.pushFloat(3, "position");
-    layout1.pushFloat(2, "textureCoords");
-    layout1.pushFloat(3, "normal");
-    va2->addBuffer(*vb1, layout1);
-
-    auto * ib2 = new IndexBuffer(indices, sizeof(indices) / sizeof(unsigned int));
-
-    auto * pointersModel =  new TexturedModel(*va2, *ib2, *texture2);
-    Entity pointersFromMain = Entity(*pointersModel);
-
 
     Renderer renderer(WIDTH, HEIGHT);
 
@@ -147,8 +70,6 @@ int main() {
 
         // render
         renderer.render(entityFromFile, shader, camera, light);
-//        renderer.render(entity, shader, camera);
-//        renderer.render(pointersFromMain, shader, camera);
 
         // Swap the screen buffers
         glfwSwapBuffers(window);

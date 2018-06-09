@@ -11,6 +11,7 @@ void Renderer::prepare() const {
 
 void Renderer::render(const Entity &entity, Shader &shader, Camera &camera, Light &light) const {
     const Model &model = entity.getModel();
+    const Texture &texture = model.getTexture();
     model.render();
     shader.bind();
 
@@ -27,6 +28,8 @@ void Renderer::render(const Entity &entity, Shader &shader, Camera &camera, Ligh
     shader.setUniformMatrix4("u_viewMatrix", viewMatrix);
     shader.setUniform3f("u_lightPosition", light.getPos());
     shader.setUniform3f("u_lightColor", light.getColor());
+    shader.setUniform1f("u_shineDamper", texture.getShineDamper());
+    shader.setUniform1f("u_reflectivity", texture.getReflectivity());
 
     debug(glDrawElements(GL_TRIANGLES, model.getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr));
 }

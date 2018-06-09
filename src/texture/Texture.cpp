@@ -40,6 +40,22 @@ Texture::~Texture() {
     std::cout << "[Texture::~Texture]" << std::endl;
 }
 
+float Texture::getShineDamper() const {
+    return m_shineDamper;
+}
+
+void Texture::setShineDamper(float shineDamper) {
+    m_shineDamper = shineDamper;
+}
+
+float Texture::getReflectivity() const {
+    return m_reflectivity;
+}
+
+void Texture::setReflectivity(float reflectivity) {
+    m_reflectivity = reflectivity;
+}
+
 void Texture::bind(unsigned int slot) const {
     debug(glActiveTexture(GL_TEXTURE0 + slot));
     debug(glBindTexture(GL_TEXTURE_2D, m_textureId));

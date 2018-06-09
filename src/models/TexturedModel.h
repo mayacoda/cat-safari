@@ -15,7 +15,9 @@ public:
 
     TexturedModel(const void* data, unsigned int size, unsigned int *indices, unsigned int count, const Texture &m_texture);
 
-    const Texture &getTexture() const;
+    Texture &getTexture();
+
+    const Texture &getTexture() const override;
 
     void render() const;
 };

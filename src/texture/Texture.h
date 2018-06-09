@@ -12,10 +12,21 @@ private:
     unsigned char* m_buffer;
     int m_width, m_height, m_bpp;
 
+    float m_shineDamper = 1;
+    float m_reflectivity = 0;
+
 public:
     Texture(const std::string &m_filePath);
 
     virtual ~Texture();
+
+    float getShineDamper() const;
+
+    float getReflectivity() const;
+
+    void setShineDamper(float m_shineDamper);
+
+    void setReflectivity(float m_reflectivity);
 
     void bind(unsigned int slot = 0) const;
 
