@@ -10,7 +10,7 @@
 #define DEBUG true
 
 float x         = 0, y = 0;
-float camX      = 0, camY = 0, camZ = 0;
+float camX      = 0, camY = 0, camZ = -30;
 float pitch     = 0, yaw = 0, roll = 0;
 bool  isPressed = false;
 
@@ -132,7 +132,7 @@ int main() {
     renderer.init();
 
     Camera camera = Camera();
-    camera.move(glm::vec3(0, 0, -50));
+    Light light = Light(glm::vec3(0, 0, -20), glm::vec3(0.8, 0.5, 1));
 
     // Game loop
     while (!glfwWindowShouldClose(window)) {
@@ -141,9 +141,12 @@ int main() {
         renderer.prepare();
 
         // update
+//        camera.rotate(glm::vec3(pitch, yaw, roll));
+        camera.move(glm::vec3(camX, camY, camZ));
+        entityFromFile.increaseRotation(0, 0.01, 0);
 
         // render
-        renderer.render(entityFromFile, shader, camera);
+        renderer.render(entityFromFile, shader, camera, light);
 //        renderer.render(entity, shader, camera);
 //        renderer.render(pointersFromMain, shader, camera);
 
@@ -165,23 +168,23 @@ void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int
     if (isPressed) {
         switch (key) {
             case GLFW_KEY_UP:
-                camY += 0.01;
+                camY += 0.1;
                 yaw   = 0.1f;
                 break;
             case GLFW_KEY_DOWN:
-                camY -= 0.01;
+                camY -= 0.1;
                 yaw   = -0.1f;
                 break;
             case GLFW_KEY_LEFT:
-                camX -= 0.01;
+                camX -= 0.1;
                 pitch = -0.1f;
                 break;
             case GLFW_KEY_RIGHT:
-                camX += 0.01;
+                camX += 0.1;
                 pitch = 0.1f;
                 break;
             case GLFW_KEY_S:
-                camZ += 0.01;
+                camZ += 0.1;
                 roll  = 0.1f;
                 break;
             case GLFW_KEY_W:

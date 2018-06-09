@@ -19,7 +19,7 @@ std::string getFileContents(const std::string &filePath) {
 TexturedModel* loadObjModel(const std::string &fileName) {
     std::ifstream inFile("./res/models/" + fileName + ".obj");
     if (!inFile.is_open()) {
-        throw std::runtime_error("Unable to OBJ file: " + fileName);
+        throw std::runtime_error("[loadObjModel]: Unable to OBJ file: " + fileName);
     }
 
     bool shouldInitializeVertices = true;
@@ -69,6 +69,20 @@ TexturedModel* loadObjModel(const std::string &fileName) {
                 // 8 = number of parts of the vertex: 3 floats position, 2 floats texture, 3 floats normal
                 bufferData               = (float*) alloca(vertices.size() * sizeof(float) * 8);
                 shouldInitializeVertices = false;
+
+                if (vertices.empty()) {
+                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have vertices!");
+                }
+
+                if (textures.empty()) {
+                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have textures!");
+                }
+
+                if (normals.empty()) {
+                    throw std::runtime_error("[loadObjModel]: Model \"" + fileName + "\" doesn't have normals!");
+                }
+
+
             }
 
 

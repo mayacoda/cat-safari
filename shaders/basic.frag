@@ -2,17 +2,23 @@
 
 layout(location = 0) out vec4 out_color;
 
-in vec3 color;
 in vec2 v_texture;
+in vec3 v_surfaceNormal;
+in vec3 v_toLightVector;
 
 uniform vec4 u_color;
 uniform sampler2D u_texture;
+uniform vec3 u_lightColor;
 
 void main() {
-    vec4 texColor = texture(u_texture, v_texture);
-    float r = texColor[0] * texColor[3] + color[0] * (1 - texColor[3]);
-    float g = texColor[1] * texColor[3] + color[1] * (1 - texColor[3]);
-    float b = texColor[2] * texColor[3] + color[2] * (1 - texColor[3]);
-    float a = texColor[3] * texColor[3] + 1 - texColor[3];
-    out_color =  vec4(r, g, b, a);
+    vec3 unitNormal = normalize(v_surfaceNormal);
+    vec3 unitLightVector = normalize(v_toLightVector);
+
+    float nDotl = dot(unitNormal, unitLightVector);
+    float brightness = max(nDotl, 0.0);
+
+    vec3 diffuse = brightness * u_lightColor;
+
+
+    out_color =  vec4(diffuse, 1.0) * texture(u_texture, v_texture);
 }

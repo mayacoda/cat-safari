@@ -11,6 +11,7 @@
 #include "../models/Model.h"
 #include "../world/Entity.h"
 #include "../world/Camera.h"
+#include "../world/Light.h"
 
 class Renderer {
 private:
@@ -26,9 +27,7 @@ public:
 
     void prepare() const;
 
-    void render(const VertexArray &va, const IndexBuffer &ib, Shader &shader) const;
-
-    void render(const Entity &entity, Shader &shader, Camera &camera) const;
+    void render(const Entity &entity, Shader &shader, Camera &camera, Light &light) const;
 };
 
 

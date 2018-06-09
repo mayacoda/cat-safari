@@ -23,6 +23,7 @@ add_executable(safari
         src/util/geometry.cpp
         src/world/Camera.cpp
         src/world/Entity.cpp
+        src/world/Light.cpp
         )
 
 find_package(OpenGL REQUIRED)
