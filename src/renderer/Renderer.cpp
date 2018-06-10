@@ -4,42 +4,38 @@
 #include "Renderer.h"
 #include "../util/geometry.h"
 
+Renderer::Renderer(int width, int height, const StaticShader &shader) : m_width(width), m_height(height), m_projectionMatrix(glm::mat4(0.0f)), m_shader(shader) {
+    m_projectionMatrix = createProjectionMatrix(width, height);
+}
+
 void Renderer::prepare() const {
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Renderer::render(const Entity &entity, Shader &shader, Camera &camera, Light &light) const {
-    const Model &model = entity.getModel();
-    const Texture &texture = model.getTexture();
-    model.render();
-    shader.bind();
-
-
-    glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPos(),
-                                                                entity.getRotation(),
-                                                                entity.getScale());
-
-//    glm::mat4 viewMatrix           = createViewMatrix(camera);
-    glm::mat4 viewMatrix           = createViewMatrix(camera.getPos());
-
-    shader.setUniformMatrix4("u_transformationMatrix", transformationMatrix);
-    shader.setUniformMatrix4("u_projectionMatrix", m_projectionMatrix);
-    shader.setUniformMatrix4("u_viewMatrix", viewMatrix);
-    shader.setUniform3f("u_lightPosition", light.getPos());
-    shader.setUniform3f("u_lightColor", light.getColor());
-    shader.setUniform1f("u_shineDamper", texture.getShineDamper());
-    shader.setUniform1f("u_reflectivity", texture.getReflectivity());
-
-    debug(glDrawElements(GL_TRIANGLES, model.getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr));
-}
-
 void Renderer::init() const {
     debug(glEnable(GL_DEPTH_TEST));
     debug(glEnable(GL_BLEND));
+    debug(glEnable(GL_CULL_FACE));
+    debug(glCullFace(GL_BACK));
     debug(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 
-Renderer::Renderer(int width, int height) : m_width(width), m_height(height), m_projectionMatrix(glm::mat4(0.0f)) {
-    m_projectionMatrix = createProjectionMatrix(width, height);
+void Renderer::render(const std::map<const TexturedModel*, std::list<Entity*> > &entities) const {
+    m_shader.loadProjectionMatrix(m_projectionMatrix);
+
+    for (auto it = entities.begin(); it != entities.end(); it++) {
+        const TexturedModel &model = *(it->first);
+        model.bind();
+        const Texture &texture = model.getTexture();
+        m_shader.loadSpecular(texture.getShineDamper(), texture.getReflectivity());
+
+        std::list<Entity*> list = it->second;
+        for (auto e = list.begin(); e != list.end(); e++) {
+            prepareInstance(**e);
+            debug(glDrawElements(GL_TRIANGLES, model.getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr));
+        }
+
+        model.unbind();
+    }
 }

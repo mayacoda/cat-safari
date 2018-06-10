@@ -6,6 +6,7 @@
 #include "shaders/Shader.h"
 #include "renderer/Renderer.h"
 #include "util/fileUtil.h"
+#include "renderer/MasterRenderer.h"
 
 #define DEBUG true
 
@@ -38,42 +39,51 @@ int main() {
     glewExperimental = GL_TRUE;
     glewInit();
 
-    Shader shader("basic", "basic");
+    StaticShader shader("basic", "basic");
 
     // READING FROM FILE ======================================= WORKS!!
-    TexturedModel *flare = loadObjModel("stall", "stallreal");
-    Texture &texture = flare->getTexture();
+    TexturedModel *flare = loadObjModel("stall");
 
-    texture.setShineDamper(5);
-    texture.setReflectivity(2);
+    Entity* entityFromFile = new Entity(*flare);
+    Entity* entityFromFile1 = new Entity(*flare);
+    entityFromFile1->increasePosition(2, 0, 0);
+    Entity* entityFromFile2 = new Entity(*flare);
+    entityFromFile2->increasePosition(0, 2, 0);
+    Entity* entityFromFile3 = new Entity(*flare);
+    entityFromFile3->increasePosition(0, 0, 2);
 
-
-    Entity entityFromFile = Entity(*flare);
-
-    Renderer renderer(WIDTH, HEIGHT);
+    Renderer renderer(WIDTH, HEIGHT, shader);
 
     renderer.init();
 
     Camera camera = Camera();
-    Light light = Light(glm::vec3(0, 0, -20), glm::vec3(0.8, 0.5, 1));
+    Light light = Light(glm::vec3(0, 0, -20), glm::vec3(1, 1, 1));
+
+    MasterRenderer master = MasterRenderer(shader, renderer);
+
 
     // Game loop
     while (!glfwWindowShouldClose(window)) {
         glfwPollEvents();
 
-        renderer.prepare();
-
+        master.processEntity(entityFromFile);
+        master.processEntity(entityFromFile1);
+        master.processEntity(entityFromFile2);
+        master.processEntity(entityFromFile3);
         // update
 //        camera.rotate(glm::vec3(pitch, yaw, roll));
         camera.move(glm::vec3(camX, camY, camZ));
-        entityFromFile.increaseRotation(0, 0.01, 0);
+        entityFromFile->increaseRotation(0, 0.01, 0);
 
         // render
-        renderer.render(entityFromFile, shader, camera, light);
+        master.render(light, camera);
 
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
+
+    delete flare;
+    master.cleanUp();
 
     glfwTerminate();
     return 0;

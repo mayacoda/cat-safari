@@ -16,7 +16,7 @@ Shader::~Shader() {
     std::cout << "[Shader::~Shader]" << std::endl;
 }
 
-int Shader::getUniformLocation(const std::string &name) {
+int Shader::getUniformLocation(const std::string &name) const {
     if (m_uniformCache.find(name) != m_uniformCache.end()) {
         return m_uniformCache[name];
     }
@@ -39,27 +39,27 @@ void Shader::unbind() const {
     debug(glUseProgram(0));
 }
 
-void Shader::setUniform3f(const std::string &name, glm::vec3 vec3) {
+void Shader::setUniform3f(const std::string &name, glm::vec3 vec3) const {
     int location = getUniformLocation(name);
     debug(glUniform3f(location, vec3.x, vec3.y, vec3.z));
 }
 
-void Shader::setUniformMatrix4(const std::string &name, glm::mat4 mat) {
+void Shader::setUniformMatrix4(const std::string &name, glm::mat4 mat) const {
     int location = getUniformLocation(name);
     debug(glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(mat)));
 }
 
-void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2, float v3) {
+void Shader::setUniform4f(const std::string &name, float v0, float v1, float v2, float v3) const {
     int location = getUniformLocation(name);
     debug(glUniform4f(location, v0, v1, v2, v3));
 }
 
-void Shader::setUniform1i(const std::string &name, int v) {
+void Shader::setUniform1i(const std::string &name, int v) const {
     int location = getUniformLocation(name);
     debug(glUniform1i(location, v));
 }
 
-void Shader::setUniform1f(const std::string &name, float v) {
+void Shader::setUniform1f(const std::string &name, float v) const {
     int location = getUniformLocation(name);
     debug(glUniform1f(location, v));
 }

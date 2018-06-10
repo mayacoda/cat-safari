@@ -13,13 +13,25 @@ private:
 public:
     TexturedModel(const VertexArray &m_va, const IndexBuffer &m_ib, const Texture &m_texture);
 
-    TexturedModel(const void* data, unsigned int size, unsigned int *indices, unsigned int count, const Texture &m_texture);
-
     Texture &getTexture();
 
     const Texture &getTexture() const override;
 
-    void render() const;
+    void bind() const;
+
+    void unbind() const override;
+
+    bool operator==(const TexturedModel &rhs) const;
+
+    bool operator!=(const TexturedModel &rhs) const;
+
+    bool operator<(const TexturedModel &rhs) const;
+
+    bool operator>(const TexturedModel &rhs) const;
+
+    bool operator<=(const TexturedModel &rhs) const;
+
+    bool operator>=(const TexturedModel &rhs) const;
 };
 
 

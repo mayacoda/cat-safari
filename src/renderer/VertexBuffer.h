@@ -16,6 +16,8 @@ public:
 
     ~VertexBuffer();
 
+    unsigned int getId() const { return m_vboId; }
+
     void bind() const;
 
     void unbind() const;

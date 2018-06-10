@@ -2,10 +2,11 @@
 #include "TexturedModel.h"
 
 TexturedModel::TexturedModel(
-                             const VertexArray &m_va,
-                             const IndexBuffer &m_ib,
-                             const Texture &m_texture) : Model(m_va, m_ib),
-                                                         m_texture(m_texture) {}
+        const VertexArray &m_va,
+        const IndexBuffer &m_ib,
+        const Texture &m_texture) : Model(m_va, m_ib),
+                                    m_texture(m_texture) {
+}
 
 
 Texture &TexturedModel::getTexture() {
@@ -16,16 +17,39 @@ const Texture &TexturedModel::getTexture() const {
     return m_texture;
 }
 
-void TexturedModel::render() const {
-    Model::render();
+void TexturedModel::bind() const {
+    Model::bind();
 
     m_texture.bind();
 }
 
-TexturedModel::TexturedModel(const void* data,
-                             unsigned int size,
-                             unsigned int* indices,
-                             unsigned int count,
-                             const Texture &texture): Model(data, size, indices, count), m_texture(texture) {
+void TexturedModel::unbind() const {
+    Model::unbind();
+    m_texture.unbind();
+}
 
+bool TexturedModel::operator==(const TexturedModel &rhs) const {
+    return rhs.getTexture().getId() == m_texture.getId() &&
+           rhs.getIndexBuffer().getId() == m_ib.getId() &&
+           rhs.getVertexArray().getId() == m_va.getId();
+}
+
+bool TexturedModel::operator!=(const TexturedModel &rhs) const {
+    return !(rhs == *this);
+}
+
+bool TexturedModel::operator<(const TexturedModel &rhs) const {
+    return m_texture.getId() < rhs.m_texture.getId();
+}
+
+bool TexturedModel::operator>(const TexturedModel &rhs) const {
+    return rhs < *this;
+}
+
+bool TexturedModel::operator<=(const TexturedModel &rhs) const {
+    return !(rhs < *this);
+}
+
+bool TexturedModel::operator>=(const TexturedModel &rhs) const {
+    return !(*this < rhs);
 }

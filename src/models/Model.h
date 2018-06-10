@@ -9,7 +9,7 @@
 #include "../texture/Texture.h"
 
 class Model {
-private:
+protected:
     VertexArray m_va;
     IndexBuffer m_ib;
 
@@ -29,7 +29,9 @@ public:
 
     virtual const Texture &getTexture() const = 0;
 
-    virtual void render() const;
+    virtual void bind() const;
+
+    virtual void unbind() const;
 };
 
 

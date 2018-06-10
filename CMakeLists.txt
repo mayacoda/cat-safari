@@ -13,6 +13,7 @@ add_executable(safari
         src/renderer/IndexBuffer.cpp
         src/renderer/VertexArray.cpp
         src/renderer/BufferLayout.cpp
+        src/renderer/MasterRenderer.cpp
         src/renderer/Renderer.cpp
         src/shaders/StaticShader.cpp
         src/shaders/shaderLoader.cpp
@@ -24,7 +25,7 @@ add_executable(safari
         src/world/Camera.cpp
         src/world/Entity.cpp
         src/world/Light.cpp
-        )
+        src/util/NonCopyable.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

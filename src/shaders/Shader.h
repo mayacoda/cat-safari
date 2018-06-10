@@ -10,10 +10,10 @@
 class Shader {
 private:
     unsigned int m_shaderId;
-    std::unordered_map<std::string, int> m_uniformCache;
+    mutable std::unordered_map<std::string, int> m_uniformCache; // mutable because it's a memoiziation caches
 
 protected:
-    int getUniformLocation(const std::string& name);
+    int getUniformLocation(const std::string& name) const;
 
 public:
     Shader(const std::string& vertex, const std::string& fragment);
@@ -23,15 +23,15 @@ public:
     void bind() const;
     void unbind() const;
 
-    void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+    void setUniform4f(const std::string& name, float v0, float v1, float v2, float v3) const;
 
-    void setUniform1i(const std::string& name, int v);
+    void setUniform1i(const std::string& name, int v) const;
 
-    void setUniform1f(const std::string &name, float v);
+    void setUniform1f(const std::string &name, float v) const;
 
-    void setUniform3f(const std::string &name, glm::vec3 vec3);
+    void setUniform3f(const std::string &name, glm::vec3 vec3) const;
 
-    void setUniformMatrix4(const std::string &name, glm::mat4 mat);
+    void setUniformMatrix4(const std::string &name, glm::mat4 mat) const;
 };
 
 

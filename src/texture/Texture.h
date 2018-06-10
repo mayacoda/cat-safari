@@ -4,6 +4,7 @@
 
 
 #include <string>
+#include "../util/NonCopyable.h"
 
 class Texture {
 private:
@@ -18,7 +19,7 @@ private:
 public:
     Texture(const std::string &m_filePath);
 
-    virtual ~Texture();
+    ~Texture();
 
     float getShineDamper() const;
 
@@ -27,6 +28,8 @@ public:
     void setShineDamper(float m_shineDamper);
 
     void setReflectivity(float m_reflectivity);
+
+    unsigned int getId() const { return m_textureId; }
 
     void bind(unsigned int slot = 0) const;
 

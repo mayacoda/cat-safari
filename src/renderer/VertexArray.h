@@ -17,6 +17,8 @@ public:
 
     void addBuffer(const VertexBuffer &vb, const BufferLayout &layout);
 
+    unsigned int getId() const { return m_vaoId; }
+
     void bind() const;
 
     void unbind() const;

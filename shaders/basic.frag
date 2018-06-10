@@ -19,10 +19,13 @@ void main() {
     vec3 unitLightVector = normalize(v_toLightVector);
 
     float nDotl = dot(unitNormal, unitLightVector);
-    float brightness = max(nDotl, 0.0);
+    // ensure that no surface is ever black, simulating ambient lighting
+    float brightness = max(nDotl, .3);
 
+    // diffuse lighting
     vec3 diffuse = brightness * u_lightColor;
 
+    // specular lighting
     vec3 unitCameraVector = normalize(v_toCameraVector);
     vec3 lightDirection = -unitLightVector;
     vec3 reflectedLightDirection = reflect(lightDirection, unitNormal);
