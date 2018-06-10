@@ -23,18 +23,13 @@ private:
 
     glm::mat4 m_projectionMatrix;
 
-    StaticShader m_shader;
+    StaticShader* m_shader;
 
-    void prepareInstance(const Entity &entity) const {
-        glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPos(),
-                                                                    entity.getRotation(),
-                                                                    entity.getScale());
-        m_shader.loadTransformationMatrix(transformationMatrix);
-    }
+    void prepareInstance(const Entity &entity) const;
 
 public:
 
-    Renderer(int width, int height, const StaticShader &shader);
+    Renderer(int width, int height, StaticShader* shader);
 
     void init() const;
 

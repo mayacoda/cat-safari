@@ -25,7 +25,7 @@ add_executable(safari
         src/world/Camera.cpp
         src/world/Entity.cpp
         src/world/Light.cpp
-        src/util/NonCopyable.h)
+        src/world/GameWorld.cpp)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

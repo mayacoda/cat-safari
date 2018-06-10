@@ -6,6 +6,13 @@ Camera::Camera() : m_pos(glm::vec3(0, 0, 1)),
                    m_yaw(0),
                    m_roll(0) {}
 
+
+Camera::Camera(const glm::vec3 &m_pos, float m_pitch, float m_yaw, float m_roll) : m_pos(m_pos),
+                                                                                   m_pitch(m_pitch),
+                                                                                   m_yaw(m_yaw),
+                                                                                   m_roll(m_roll) {}
+
+
 const glm::vec3 &Camera::getPos() const {
     return m_pos;
 }

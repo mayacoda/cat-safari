@@ -4,6 +4,7 @@
 
 
 #include <glm/vec3.hpp>
+#include <glm/detail/func_geometric.hpp>
 
 class Camera {
 private:
@@ -16,6 +17,8 @@ private:
 public:
     Camera();
 
+    Camera(const glm::vec3 &m_pos, float m_pitch, float m_yaw, float m_roll);
+
     const glm::vec3 &getPos() const;
 
     float getPitch() const;
@@ -25,6 +28,15 @@ public:
     float getRoll() const;
 
     void move(glm::vec3 position);
+
+    void moveToward(const glm::vec3 &position, float distance) {
+        glm::vec3 diff = m_pos - position;
+        if (glm::length(diff) < distance) {
+            move(position);
+        } else {
+            move(m_pos - glm::normalize(diff) * distance);
+        }
+    }
 
     void rotate(glm::vec3 angles);
 
