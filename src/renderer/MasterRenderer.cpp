@@ -22,12 +22,14 @@ MasterRenderer::~MasterRenderer() {
 }
 
 void MasterRenderer::render(const Light &light, const Camera &camera) {
-    debug(glClearColor(.6, .8, .9, 1));
+    glm::vec3 skyColor(0.6, 0.8, 0.9);
+    debug(glClearColor(skyColor.r, skyColor.g, skyColor.b, 1));
     debug(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
     m_entityShader->bind();
     m_entityShader->loadLight(light);
     m_entityShader->loadViewMatrix(camera);
+    m_entityShader->loadSkyColor(skyColor);
     m_entityRenderer->render(m_entities);
 
     m_entityShader->unbind();
@@ -35,6 +37,7 @@ void MasterRenderer::render(const Light &light, const Camera &camera) {
     m_terrainShader->bind();
     m_terrainShader->loadLight(light);
     m_terrainShader->loadViewMatrix(camera);
+    m_terrainShader->loadSkyColor(skyColor);
     m_terrainRenderer->render(m_terrains);
     m_terrainShader->unbind();
 

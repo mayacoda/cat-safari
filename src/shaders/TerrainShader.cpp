@@ -28,3 +28,7 @@ void TerrainShader::loadSpecular(float shineDamper, float reflectivity) const {
     setUniform1f("u_shineDamper", shineDamper);
     setUniform1f("u_reflectivity", reflectivity);
 }
+
+void TerrainShader::loadSkyColor(const glm::vec3 &sky) const {
+    setUniform3f("u_skyColor", sky);
+}

@@ -6,10 +6,12 @@ in vec2 v_texture;
 in vec3 v_surfaceNormal;
 in vec3 v_toLightVector;
 in vec3 v_toCameraVector;
+in float v_visibility;
 
 uniform vec4 u_color;
 uniform sampler2D u_texture;
 uniform vec3 u_lightColor;
+uniform vec3 u_skyColor;
 
 uniform float u_shineDamper;
 uniform float u_reflectivity;
@@ -37,4 +39,5 @@ void main() {
     vec3 finalSpecular = dampedFactor * u_reflectivity * u_lightColor;
 
     out_color =  vec4(0, 0.1, 0, 1) + vec4(diffuse, 1.0) * texture(u_texture, v_texture) + vec4(finalSpecular, 1.0);
+    out_color = mix(vec4(u_skyColor, 1.0), out_color, v_visibility);
 }
