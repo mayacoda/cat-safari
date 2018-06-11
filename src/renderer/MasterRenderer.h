@@ -22,24 +22,9 @@ private:
     std::list<Terrain*> m_terrains;
 
 public:
-    MasterRenderer(int width, int height) {
-        init();
-        m_projectionMatrix = createProjectionMatrix(width, height);
+    MasterRenderer(int width, int height);
 
-        m_entityShader    = new StaticShader();
-        m_entityRenderer  = new EntityRenderer(m_entityShader, m_projectionMatrix);
-
-        m_terrainShader   = new TerrainShader();
-        m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
-    }
-
-    virtual ~MasterRenderer() {
-        delete m_entityShader;
-        delete m_entityRenderer;
-
-        delete m_terrainShader;
-        delete m_terrainRenderer;
-    }
+    virtual ~MasterRenderer();
 
     void render(const Light &light, const Camera &camera);
 
@@ -50,6 +35,15 @@ public:
     void cleanUp();
 
     void init();
+
+    static void enableCulling() {
+        debug(glEnable(GL_CULL_FACE));
+        debug(glCullFace(GL_BACK));
+    }
+
+    static void disableCulling() {
+        debug(glDisable(GL_CULL_FACE));
+    }
 
 };
 

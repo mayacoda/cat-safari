@@ -1,6 +1,26 @@
 
 #include "MasterRenderer.h"
 
+
+MasterRenderer::MasterRenderer(int width, int height) {
+    init();
+    m_projectionMatrix = createProjectionMatrix(width, height);
+
+    m_entityShader   = new StaticShader();
+    m_entityRenderer = new EntityRenderer(m_entityShader, m_projectionMatrix);
+
+    m_terrainShader   = new TerrainShader();
+    m_terrainRenderer = new TerrainRenderer(m_terrainShader, m_projectionMatrix);
+}
+
+MasterRenderer::~MasterRenderer() {
+    delete m_entityShader;
+    delete m_entityRenderer;
+
+    delete m_terrainShader;
+    delete m_terrainRenderer;
+}
+
 void MasterRenderer::render(const Light &light, const Camera &camera) {
     debug(glClearColor(.6, .8, .9, 1));
     debug(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -23,14 +43,13 @@ void MasterRenderer::render(const Light &light, const Camera &camera) {
 }
 
 void MasterRenderer::processEntity(Entity* entity) {
-    const TexturedModel &model = entity->getModel();
-    const TexturedModel* ptr = &model;
+    const TexturedModel *model = entity->getModel();
 
-    if (m_entities.find(ptr) != m_entities.end()) {
-        m_entities[ptr].push_back(entity);
+    if (m_entities.find(model) != m_entities.end()) {
+        m_entities[model].push_back(entity);
     } else {
-        m_entities[ptr] = std::list<Entity*>();
-        m_entities[ptr].push_back(entity);
+        m_entities[model] = std::list<Entity*>();
+        m_entities[model].push_back(entity);
     }
 }
 
@@ -48,8 +67,7 @@ void MasterRenderer::cleanUp() {
 void MasterRenderer::init() {
     debug(glEnable(GL_DEPTH_TEST));
     debug(glEnable(GL_BLEND));
-    debug(glEnable(GL_CULL_FACE));
-    debug(glCullFace(GL_BACK));
+    MasterRenderer::enableCulling();
     debug(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
 }
 

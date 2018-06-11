@@ -47,7 +47,7 @@ public:
         m_rot += glm::vec3(dx, dy, dz);
     }
 
-    const TexturedModel & getModel() const { return *m_model; }
+    const TexturedModel * getModel() const { return m_model; }
 
     const glm::vec3 &getPos() const { return m_pos; }
 

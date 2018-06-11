@@ -2,6 +2,7 @@
 #include <glm/detail/type_mat4x4.hpp>
 #include <glm/glm.hpp>
 #include "EntityRenderer.h"
+#include "MasterRenderer.h"
 
 EntityRenderer::EntityRenderer(StaticShader* shader, glm::mat4 matrix) : m_shader(shader) {
 
@@ -17,6 +18,9 @@ void EntityRenderer::render(const std::map<const TexturedModel*, std::list<Entit
         model.bind();
         const Texture &texture = model.getTexture();
         m_shader->loadSpecular(texture.getShineDamper(), texture.getReflectivity());
+        if (texture.getTransparency()) {
+            MasterRenderer::disableCulling();
+        }
 
         std::list<Entity*> list = it->second;
 
@@ -25,6 +29,7 @@ void EntityRenderer::render(const std::map<const TexturedModel*, std::list<Entit
             debug(glDrawElements(GL_TRIANGLES, model.getIndexBuffer().getCount(), GL_UNSIGNED_INT, nullptr));
         }
 
+        MasterRenderer::enableCulling();
         model.unbind();
     }
 }

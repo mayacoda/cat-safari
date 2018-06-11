@@ -13,6 +13,8 @@ private:
     unsigned char* m_buffer;
     int m_width, m_height, m_bpp;
 
+    bool m_hasTransparency;
+
     float m_shineDamper = 1;
     float m_reflectivity = 0;
 
@@ -30,6 +32,8 @@ public:
     void setReflectivity(float m_reflectivity);
 
     unsigned int getId() const { return m_textureId; }
+
+    bool getTransparency() const { return m_hasTransparency; }
 
     void bind(unsigned int slot = 0) const;
 

@@ -36,5 +36,12 @@ void main() {
     float dampedFactor = pow(specularFactor, u_shineDamper);
     vec3 finalSpecular = dampedFactor * u_reflectivity * u_lightColor;
 
-    out_color =  vec4(diffuse, 1.0) * texture(u_texture, v_texture) + vec4(finalSpecular, 1.0);
+    vec4 textureColor = texture(u_texture, v_texture);
+
+    // mock transparency
+    if (textureColor.a < 0.5) {
+        discard;
+    }
+
+    out_color =  vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0);
 }
