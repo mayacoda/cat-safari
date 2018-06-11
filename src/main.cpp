@@ -1,9 +1,9 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "renderer/VertexArray.h"
+#include "models/VertexArray.h"
 #include "shaders/Shader.h"
-#include "renderer/Renderer.h"
+#include "renderer/EntityRenderer.h"
 #include "util/fileUtil.h"
 #include "renderer/MasterRenderer.h"
 #include "world/GameWorld.h"
@@ -79,7 +79,6 @@ int main() {
         glfwSwapBuffers(window);
     }
 
-//    delete flare;
     delete world;
 
     glfwTerminate();

@@ -8,12 +8,14 @@
 
 class TexturedModel: public Model {
 private:
-    Texture m_texture;
+    Texture *m_texture;
 
 public:
-    TexturedModel(const VertexArray &m_va, const IndexBuffer &m_ib, const Texture &m_texture);
+    TexturedModel( VertexArray *m_va,  IndexBuffer *m_ib,  Texture *m_texture);
 
     Texture &getTexture();
+
+    virtual ~TexturedModel();
 
     const Texture &getTexture() const override;
 

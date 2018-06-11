@@ -106,7 +106,6 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
     inFile.close();
 
     auto* texture = new Texture("./res/textures/" + texturePath + ".png");
-    texture->bind();
 
     auto* va = new VertexArray();
     auto* vb = new VertexBuffer(bufferData, (unsigned int) vertices.size() * sizeof(float) * 8);
@@ -117,11 +116,9 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
     layout.pushFloat(3, "normal");
     va->addBuffer(*vb, layout);
 
-    auto* ib = new IndexBuffer(&indices[0], static_cast<unsigned int>(indices.size() * sizeof(unsigned int)));
+    auto* ib = new IndexBuffer(&indices[0], static_cast<unsigned int>(indices.size()));
 
-    auto* pointersModel = new TexturedModel(*va, *ib, *texture);
-
-    return pointersModel;
+    return new TexturedModel(va, ib, texture);
 }
 
 TexturedModel* loadObjModel(const std::string &fileName) {
@@ -154,7 +151,7 @@ void processVertex(const std::string &input,
 
     glm::vec3 vertex = vertices[vertexIndex];
 
-    vertexIndex *= 8; // move by 8 every time because there are 8 elements to each vertex
+    vertexIndex *= 8; // moveBy by 8 every time because there are 8 elements to each vertex
     bufferData[vertexIndex]     = vertex.x;
     bufferData[vertexIndex + 1] = vertex.y;
     bufferData[vertexIndex + 2] = vertex.z;

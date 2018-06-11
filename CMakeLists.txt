@@ -9,12 +9,12 @@ add_executable(safari
         lib/glm.h
         src/models/Model.cpp
         src/models/TexturedModel.cpp
-        src/renderer/VertexBuffer.cpp
-        src/renderer/IndexBuffer.cpp
-        src/renderer/VertexArray.cpp
-        src/renderer/BufferLayout.cpp
+        src/models/VertexBuffer.cpp
+        src/models/IndexBuffer.cpp
+        src/models/VertexArray.cpp
+        src/models/BufferLayout.cpp
         src/renderer/MasterRenderer.cpp
-        src/renderer/Renderer.cpp
+        src/renderer/EntityRenderer.cpp
         src/shaders/StaticShader.cpp
         src/shaders/shaderLoader.cpp
         src/shaders/Shader.cpp
@@ -25,7 +25,7 @@ add_executable(safari
         src/world/Camera.cpp
         src/world/Entity.cpp
         src/world/Light.cpp
-        src/world/GameWorld.cpp)
+        src/world/GameWorld.cpp src/world/Terrain.cpp src/world/Terrain.h src/shaders/TerrainShader.cpp src/shaders/TerrainShader.h src/renderer/TerrainRenderer.cpp src/renderer/TerrainRenderer.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

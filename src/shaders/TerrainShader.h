@@ -1,15 +1,15 @@
 
-#ifndef SAFARI_BASICSHADER_H
-#define SAFARI_BASICSHADER_H
+#ifndef SAFARI_TERRAINSHADER_H
+#define SAFARI_TERRAINSHADER_H
 
 
 #include "Shader.h"
 #include "../world/Camera.h"
 #include "../world/Light.h"
 
-class StaticShader: public Shader {
+class TerrainShader : public Shader {
 public:
-    StaticShader();
+    TerrainShader();
 
     void loadTransformationMatrix(const glm::mat4 &matrix) const;
 
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //SAFARI_BASICSHADER_H
+#endif //SAFARI_TERRAINSHADER_H

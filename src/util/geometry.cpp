@@ -1,13 +1,13 @@
 #include "geometry.h"
 #include <glm/glm.hpp> // vec3, vec4, ivec4, mat4
-#include <glm/gtc/matrix_transform.hpp> // translate, rotate, scale, perspective
+#include <glm/gtc/matrix_transform.hpp> // translate, rotateBy, scale, perspective
 #include <glm/gtc/type_ptr.hpp> // value_ptr
 
 glm::mat4 createTransformationMatrix(const glm::vec3 &translate, const glm::vec3 &rotate, float scale) {
     // translate an identity matrix to the location
     glm::mat4 viewTranslate = glm::translate(glm::mat4(1.0f), translate);
 
-    // rotate the translated matrix
+    // rotateBy the translated matrix
     glm::mat4 viewRotateX = glm::rotate(viewTranslate, rotate.x, glm::vec3(1.0f, 0.0f, 0.0f));
     glm::mat4 viewRotateY = glm::rotate(viewRotateX, rotate.y, glm::vec3(0, 1.0f, 0.0f));
     glm::mat4 viewRotateZ = glm::rotate(viewRotateY, rotate.z, glm::vec3(0, 0.0f, 1.0f));

@@ -7,8 +7,8 @@
 #include <glm/mat4x4.hpp>
 #include <list>
 #include <map>
-#include "VertexArray.h"
-#include "IndexBuffer.h"
+#include "../models/VertexArray.h"
+#include "../models/IndexBuffer.h"
 #include "../shaders/Shader.h"
 #include "../models/Model.h"
 #include "../world/Entity.h"
@@ -17,23 +17,15 @@
 #include "../shaders/StaticShader.h"
 #include "../util/geometry.h"
 
-class Renderer {
+class EntityRenderer {
 private:
-    int m_width, m_height;
-
-    glm::mat4 m_projectionMatrix;
-
     StaticShader* m_shader;
 
     void prepareInstance(const Entity &entity) const;
 
 public:
 
-    Renderer(int width, int height, StaticShader* shader);
-
-    void init() const;
-
-    void prepare() const;
+    EntityRenderer(StaticShader* shader, glm::mat4 matrix);
 
     void render(const std::map<const TexturedModel*, std::list<Entity*> > &entities) const;
 

@@ -5,7 +5,7 @@
 #include "../../lib/stb_image.h"
 #include "../util/GL.h"
 
-Texture::Texture(const std::string &path) : m_textureId(0),
+Texture::Texture(const std::string &path, bool tile) : m_textureId(0),
                                             m_filePath(path),
                                             m_buffer(nullptr),
                                             m_width(0),
@@ -22,8 +22,8 @@ Texture::Texture(const std::string &path) : m_textureId(0),
 
     debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
-    debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
+    debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, tile ? GL_REPEAT : GL_CLAMP_TO_EDGE));
+    debug(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, tile ? GL_REPEAT : GL_CLAMP_TO_EDGE));
 
     debug(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_buffer));
 

@@ -29,12 +29,22 @@ float Camera::getRoll() const {
     return m_roll;
 }
 
-void Camera::move(glm::vec3 position) {
-    m_pos = position;
+void Camera::moveBy(glm::vec3 position) {
+    m_pos += position;
 }
 
-void Camera::rotate(glm::vec3 angles) {
+void Camera::rotateBy(glm::vec3 angles) {
     m_pitch += angles.x;
     m_yaw += angles.y;
     m_roll += angles.z;
+}
+
+void Camera::rotate(glm::vec3 angles) {
+    m_pitch = angles.x;
+    m_yaw = angles.y;
+    m_roll = angles.z;
+}
+
+void Camera::moveTo(glm::vec3 position) {
+    m_pos = position;
 }

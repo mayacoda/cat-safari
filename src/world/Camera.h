@@ -27,16 +27,20 @@ public:
 
     float getRoll() const;
 
-    void move(glm::vec3 position);
+    void moveBy(glm::vec3 position);
+
+    void moveTo(glm::vec3 position);
 
     void moveToward(const glm::vec3 &position, float distance) {
         glm::vec3 diff = m_pos - position;
         if (glm::length(diff) < distance) {
-            move(position);
+            moveTo(position);
         } else {
-            move(m_pos - glm::normalize(diff) * distance);
+            moveTo(m_pos - glm::normalize(diff) * distance);
         }
     }
+
+    void rotateBy(glm::vec3 angles);
 
     void rotate(glm::vec3 angles);
 

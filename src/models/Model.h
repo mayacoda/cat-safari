@@ -4,26 +4,23 @@
 
 
 #include "../shaders/Shader.h"
-#include "../renderer/VertexArray.h"
-#include "../renderer/IndexBuffer.h"
+#include "VertexArray.h"
+#include "IndexBuffer.h"
 #include "../texture/Texture.h"
 
 class Model {
 protected:
-    VertexArray m_va;
-    IndexBuffer m_ib;
+    VertexArray * m_va;
+    IndexBuffer * m_ib;
 
 public:
-    Model(const VertexArray &m_va, const IndexBuffer &m_ib);
+    Model( VertexArray *m_va,  IndexBuffer *m_ib);
 
-    Model(const void* data,
-          unsigned int size,
-          unsigned int* indices,
-          unsigned int count);
+    virtual ~Model();
 
-    const VertexArray &getVertexArray() const { return m_va; }
+    const VertexArray &getVertexArray() const { return *m_va; }
 
-    const IndexBuffer &getIndexBuffer() const { return m_ib; }
+    const IndexBuffer &getIndexBuffer() const { return *m_ib; }
 
     virtual Texture &getTexture() = 0;
 

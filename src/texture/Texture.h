@@ -17,7 +17,7 @@ private:
     float m_reflectivity = 0;
 
 public:
-    Texture(const std::string &m_filePath);
+    Texture(const std::string &m_filePath, bool tile = false);
 
     ~Texture();
 

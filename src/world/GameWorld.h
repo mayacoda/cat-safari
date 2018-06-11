@@ -12,11 +12,12 @@ private:
     MasterRenderer* m_master;
     Camera        * m_camera;
     Light         * m_light;
-    StaticShader  * m_shader;
 
     GLFWwindow* m_window;
 
     std::vector<Entity*> m_entities;
+    std::vector<Terrain*> m_terrains;
+    std::vector<Model*> m_models; // to keep track of models created so they can be deleted
 
     glm::dvec2 m_mousePos;
 
