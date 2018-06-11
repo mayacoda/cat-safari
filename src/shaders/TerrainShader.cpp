@@ -11,7 +11,7 @@ void TerrainShader::loadTransformationMatrix(const glm::mat4 &matrix) const {
 }
 
 void TerrainShader::loadViewMatrix(Camera camera) const {
-    glm::mat4 viewMatrix           = createViewMatrix(camera);
+    glm::mat4 viewMatrix = createViewMatrix(camera);
     setUniformMatrix4("u_viewMatrix", viewMatrix);
 }
 
@@ -31,4 +31,12 @@ void TerrainShader::loadSpecular(float shineDamper, float reflectivity) const {
 
 void TerrainShader::loadSkyColor(const glm::vec3 &sky) const {
     setUniform3f("u_skyColor", sky);
+}
+
+void TerrainShader::connectTextureSlots() {
+    setUniform1i("u_backgroundTexture", 0);
+    setUniform1i("u_rTexture", 1);
+    setUniform1i("u_gTexture", 2);
+    setUniform1i("u_bTexture", 3);
+    setUniform1i("u_blendMap", 4);
 }

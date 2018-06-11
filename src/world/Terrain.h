@@ -5,6 +5,7 @@
 
 #include "../models/TexturedModel.h"
 #include "../util/fileUtil.h"
+#include "../texture/TerrainTexturePack.h"
 
 class Terrain {
 private:
@@ -14,22 +15,29 @@ private:
     float m_x;
     float m_z;
 
-    TexturedModel* m_model;
+    Model* m_model;
+    TerrainTexturePack* m_texturePack;
+    TerrainTexture * m_blendMap;
 
-    TexturedModel* generateTerrain();
+    Model* generateTerrain();
 
 public:
 
     Terrain(int gridX, int gridZ) : m_x(gridX * Terrain::SIZE), m_z(gridZ * Terrain::SIZE) {
         m_model = generateTerrain();
+        m_texturePack = new TerrainTexturePack("grass", "gravel", "terrain2", "road");
+        m_blendMap = new TerrainTexture("./res/blend_map.png");
     }
 
     float getX() const { return m_x; }
 
     float getZ() const { return m_z; }
 
-    TexturedModel* getModel() const { return m_model; }
+    Model* getModel() const { return m_model; }
 
+    TerrainTexturePack* getTexture() const { return m_texturePack; }
+
+    TerrainTexture* getBlendMap() const { return m_blendMap; }
 };
 
 

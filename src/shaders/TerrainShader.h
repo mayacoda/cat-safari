@@ -22,6 +22,8 @@ public:
     void loadSpecular(float shineDamper, float reflectivity) const;
 
     void loadSkyColor(const glm::vec3 &sky) const;
+
+    void connectTextureSlots();
 };
 
 

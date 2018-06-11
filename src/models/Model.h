@@ -22,10 +22,6 @@ public:
 
     const IndexBuffer &getIndexBuffer() const { return *m_ib; }
 
-    virtual Texture &getTexture() = 0;
-
-    virtual const Texture &getTexture() const = 0;
-
     virtual void bind() const;
 
     virtual void unbind() const;

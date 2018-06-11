@@ -17,7 +17,7 @@ public:
 
     virtual ~TexturedModel();
 
-    const Texture &getTexture() const override;
+    const Texture &getTexture() const;
 
     void bind() const;
 

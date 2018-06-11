@@ -9,14 +9,34 @@ in vec3 v_toCameraVector;
 in float v_visibility;
 
 uniform vec4 u_color;
-uniform sampler2D u_texture;
 uniform vec3 u_lightColor;
 uniform vec3 u_skyColor;
+
+uniform sampler2D u_backgroundTexture;
+uniform sampler2D u_rTexture;
+uniform sampler2D u_gTexture;
+uniform sampler2D u_bTexture;
+uniform sampler2D u_blendMap;
 
 uniform float u_shineDamper;
 uniform float u_reflectivity;
 
 void main() {
+
+    // get the color of the blendmap and the given location
+    vec4 blendMapColor = texture(u_blendMap, v_texture);
+
+    // the amount of texture to display for the black color
+    float backTextureAmount = 1 - (blendMapColor.r + blendMapColor.g + blendMapColor.b);
+    vec2 tiledCoords = v_texture * 40.0;
+
+    vec4 backgroundTextureColor = texture(u_backgroundTexture, tiledCoords) * backTextureAmount;
+    vec4 rTextureColor = texture(u_rTexture, tiledCoords) * blendMapColor.r;
+    vec4 gTextureColor = texture(u_gTexture, tiledCoords) * blendMapColor.g;
+    vec4 bTextureColor = texture(u_bTexture, tiledCoords) * blendMapColor.b;
+
+    vec4 totalColor = backgroundTextureColor + rTextureColor + gTextureColor + bTextureColor;
+
     vec3 unitNormal = normalize(v_surfaceNormal);
     vec3 unitLightVector = normalize(v_toLightVector);
 
@@ -38,6 +58,6 @@ void main() {
     float dampedFactor = pow(specularFactor, u_shineDamper);
     vec3 finalSpecular = dampedFactor * u_reflectivity * u_lightColor;
 
-    out_color =  vec4(0, 0.1, 0, 1) + vec4(diffuse, 1.0) * texture(u_texture, v_texture) + vec4(finalSpecular, 1.0);
+    out_color = vec4(diffuse, 1.0) * totalColor + vec4(finalSpecular, 1.0);
     out_color = mix(vec4(u_skyColor, 1.0), out_color, v_visibility);
 }

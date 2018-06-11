@@ -1,7 +1,7 @@
 
 #include "Terrain.h"
 
-TexturedModel* Terrain::generateTerrain() {
+Model* Terrain::generateTerrain() {
 
     int count = Terrain::VERTEX_COUNT * Terrain::VERTEX_COUNT;
     auto* vertices = new float[count * 8];
@@ -46,8 +46,6 @@ TexturedModel* Terrain::generateTerrain() {
         }
     }
 
-    Texture* texture = new Texture("./res/textures/terrain2.png", true);
-
     auto* va = new VertexArray();
     auto* vb = new VertexBuffer(vertices, (unsigned int) count * 8 * sizeof(float));
 
@@ -61,5 +59,5 @@ TexturedModel* Terrain::generateTerrain() {
                                (unsigned int) (6 * (Terrain::VERTEX_COUNT - 1) *
                                                (Terrain::VERTEX_COUNT - 1)));
 
-    return new TexturedModel(va, ib, texture);
+    return new Model(va, ib);
 }

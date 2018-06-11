@@ -25,7 +25,7 @@ void main() {
 
     gl_Position = u_projectionMatrix * positionRelativeToCam;
 
-    v_texture = texCoord * 40.0;
+    v_texture = texCoord;
 
     // diffused lighting
     v_surfaceNormal = (u_transformationMatrix * vec4(normal, 0.0)).xyz;
