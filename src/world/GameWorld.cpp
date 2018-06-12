@@ -25,32 +25,22 @@ GameWorld::~GameWorld() {
 
 void GameWorld::init(GLFWwindow* window) {
     m_window = window;
-    m_camera = new Camera(glm::vec3(0, 10, -30), 0, 180, 0);
+    m_camera = new Camera(glm::vec3(-20, 10, 0), 0, 0, 0);
     m_light  = new Light(glm::vec3(0, 100, -20), glm::vec3(1, 1, 1));
 
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
 
-    glfwGetCursorPos(m_window, &m_mousePos.x, &m_mousePos.y);
-
     m_master = new MasterRenderer(width, height);
 
-    TexturedModel* flare = loadObjModel("stall");
+    TexturedModel* stall  = loadObjModel("stall");
+    TexturedModel* player = loadObjModel("stall", "white");
+    m_player = new Player(player, glm::vec3(-20, 0, 20), glm::vec3(0), 1);
 
-    Entity* entityFromFile  = new Entity(flare);
-    Entity* entityFromFile1 = new Entity(flare);
-    entityFromFile1->increasePosition(20, 0, 0);
-    Entity* entityFromFile2 = new Entity(flare);
-    entityFromFile2->increasePosition(0, 0, 0);
-    Entity* entityFromFile3 = new Entity(flare);
-    entityFromFile3->increasePosition(0, 0, 20);
+    m_entities.push_back(m_player);
 
-    m_entities.push_back(entityFromFile);
-    m_entities.push_back(entityFromFile1);
-    m_entities.push_back(entityFromFile2);
-    m_entities.push_back(entityFromFile3);
-
-    m_models.push_back(flare);
+    m_models.push_back(stall);
+    m_models.push_back(player);
 
     m_terrains.push_back(new Terrain(0, 0));
     m_terrains.push_back(new Terrain(1, 0));
@@ -64,7 +54,10 @@ void GameWorld::init(GLFWwindow* window) {
 }
 
 void GameWorld::update(double deltaTime) {
+    pollKeyboard();
+    pollMouse();
 
+    m_player->update(static_cast<float>(deltaTime));
 }
 
 void GameWorld::render() const {
@@ -80,54 +73,53 @@ void GameWorld::render() const {
     m_master->render(*m_light, *m_camera);
 }
 
-void GameWorld::keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    static bool isPressed = false;
+void GameWorld::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
 
-    if (action == GLFW_PRESS) {
-        isPressed = true;
-    } else if (action == GLFW_RELEASE) {
-        isPressed = false;
+    if (glm::length(m_camera->getPos() - m_player->getPos()) < 5.0f) {
+        return;
     }
 
-    float camX = 0, camZ = 0;
-
-    if (isPressed) {
-        switch (key) {
-            case GLFW_KEY_W:
-                camZ += 1;
-                break;
-            case GLFW_KEY_S:
-                camZ -= 1;
-                break;
-            case GLFW_KEY_A:
-                camX += 1;
-                break;
-            case GLFW_KEY_D:
-                camX -= 1;
-                break;
-            default:break;
-        }
-
-        m_camera->moveBy(glm::vec3(camX, 0, camZ));
+    if (yOffset > 0) {
+        m_camera->moveToward(m_player->getPos(), 1);
+    } else {
+        m_camera->moveToward(m_player->getPos(), -1);
     }
 }
 
-void GameWorld::mousePositionCallback(GLFWwindow* window, double xPos, double yPos) {
+void GameWorld::pollKeyboard() const {
+
+    if (glfwGetKey(m_window, GLFW_KEY_W)) {
+        m_player->setSpeed(Player::MAX_SPEED);
+    } else if (glfwGetKey(m_window, GLFW_KEY_S)) {
+        m_player->setSpeed(-Player::MAX_SPEED);
+    } else {
+        m_player->setSpeed(0);
+    }
+
+    if (glfwGetKey(m_window, GLFW_KEY_A)) {
+        m_player->setTurnSpeed(Player::MAX_TURN_SPEED);
+    } else if (glfwGetKey(m_window, GLFW_KEY_D)) {
+        m_player->setTurnSpeed(-Player::MAX_TURN_SPEED);
+    } else {
+        m_player->setTurnSpeed(0);
+    }
+
+    if (glfwGetKey(m_window, GLFW_KEY_SPACE)) {
+        m_player->jump();
+    }
+
+//    m_camera->moveBy(m_player->getPos());
+}
+
+void GameWorld::pollMouse() const {
+    double xPos, yPos;
+    glfwGetCursorPos(m_window, &xPos, &yPos);
 
     int height, width;
-    glfwGetWindowSize(window, &width, &height);
+    glfwGetWindowSize(m_window, &width, &height);
 
-    double yaw = width / 2. - xPos;
+    double yaw   = width / 2. - xPos;
     double pitch = height / 2. - yPos;
 
     m_camera->rotate(glm::vec3(pitch * .1, 180 + yaw * .1, 0));
-}
-
-void GameWorld::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
-
-    if (yOffset > 0) {
-        m_camera->moveToward(glm::vec3(0, 0, 0), 1);
-    } else {
-        m_camera->moveToward(glm::vec3(0, 0, 0), -1);
-    }
 }

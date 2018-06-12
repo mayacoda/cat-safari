@@ -24,10 +24,6 @@ double dt = 0.0166666666666667;
 
 GameWorld* world = new GameWorld();
 
-void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-void mousePositionCallback(GLFWwindow* window, double xPos, double yPos);
-
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
 int main() {
@@ -49,8 +45,6 @@ int main() {
 
     world->init(window);
 
-    glfwSetKeyCallback(window, keyboardCallback);
-    glfwSetCursorPosCallback(window, mousePositionCallback);
     glfwSetScrollCallback(window, scrollCallback);
 
     clock_t currentTime = clock();
@@ -73,8 +67,6 @@ int main() {
         // render
         world->render();
 
-
-
         // Swap the screen buffers
         glfwSwapBuffers(window);
     }
@@ -83,15 +75,6 @@ int main() {
 
     glfwTerminate();
     return 0;
-}
-
-
-void mousePositionCallback(GLFWwindow* window, double xPos, double yPos) {
-    world->mousePositionCallback(window, xPos, yPos);
-}
-
-void keyboardCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    world->keyboardCallback(window, key, scancode, action, mods);
 }
 
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {

@@ -8,9 +8,9 @@ glm::mat4 createTransformationMatrix(const glm::vec3 &translate, const glm::vec3
     glm::mat4 viewTranslate = glm::translate(glm::mat4(1.0f), translate);
 
     // rotateBy the translated matrix
-    glm::mat4 viewRotateX = glm::rotate(viewTranslate, rotate.x, glm::vec3(1.0f, 0.0f, 0.0f));
-    glm::mat4 viewRotateY = glm::rotate(viewRotateX, rotate.y, glm::vec3(0, 1.0f, 0.0f));
-    glm::mat4 viewRotateZ = glm::rotate(viewRotateY, rotate.z, glm::vec3(0, 0.0f, 1.0f));
+    glm::mat4 viewRotateX = glm::rotate(viewTranslate, glm::radians(rotate.x), glm::vec3(1.0f, 0.0f, 0.0f));
+    glm::mat4 viewRotateY = glm::rotate(viewRotateX, glm::radians(rotate.y), glm::vec3(0, 1.0f, 0.0f));
+    glm::mat4 viewRotateZ = glm::rotate(viewRotateY, glm::radians(rotate.z), glm::vec3(0, 0.0f, 1.0f));
 
     // scale matrix
     glm::mat4 scaleMatrix = glm::scale(viewRotateZ, glm::vec3(scale));

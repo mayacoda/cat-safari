@@ -25,7 +25,7 @@ add_executable(safari
         src/world/Camera.cpp
         src/world/Entity.cpp
         src/world/Light.cpp
-        src/world/GameWorld.cpp src/world/Terrain.cpp src/world/Terrain.h src/shaders/TerrainShader.cpp src/shaders/TerrainShader.h src/renderer/TerrainRenderer.cpp src/renderer/TerrainRenderer.h src/texture/TerrainTexture.cpp src/texture/TerrainTexture.h src/texture/TerrainTexturePack.cpp src/texture/TerrainTexturePack.h)
+        src/world/GameWorld.cpp src/world/Terrain.cpp src/world/Terrain.h src/shaders/TerrainShader.cpp src/shaders/TerrainShader.h src/renderer/TerrainRenderer.cpp src/renderer/TerrainRenderer.h src/texture/TerrainTexture.cpp src/texture/TerrainTexture.h src/texture/TerrainTexturePack.cpp src/texture/TerrainTexturePack.h src/world/Player.cpp src/world/Player.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

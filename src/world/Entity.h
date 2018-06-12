@@ -15,7 +15,7 @@ private:
         return id++;
     }
 
-    TexturedModel * m_model;
+    TexturedModel* m_model;
 
     // position
     glm::vec3 m_pos;
@@ -27,13 +27,20 @@ private:
     float m_scale;
 
 public:
-    Entity(TexturedModel *m_model,
+    Entity(TexturedModel* m_model,
            const glm::vec3 &m_pos,
            const glm::vec3 &m_rot,
            float m_scale) : m_model(m_model),
                             m_pos(m_pos),
                             m_rot(m_rot),
                             m_scale(m_scale) {
+        m_id = generateId();
+    }
+
+    Entity(TexturedModel* model) : m_model(model),
+                                   m_pos(glm::vec3(0, 0, 0)),
+                                   m_rot(glm::vec3(0, 0, 0)),
+                                   m_scale(1.0f) {
         m_id = generateId();
     }
 
@@ -47,7 +54,7 @@ public:
         m_rot += glm::vec3(dx, dy, dz);
     }
 
-    const TexturedModel * getModel() const { return m_model; }
+    const TexturedModel* getModel() const { return m_model; }
 
     const glm::vec3 &getPos() const { return m_pos; }
 
@@ -57,12 +64,11 @@ public:
         return m_scale;
     }
 
-    Entity(TexturedModel *model) : m_model(model),
-                                         m_pos(glm::vec3(0, 0, 0)),
-                                         m_rot(glm::vec3(0, 0, 0)),
-                                         m_scale(1.0f) {
-        m_id = generateId();
-    }
+    void setX(float x) { m_pos.x = x; }
+
+    void setY(float y) { m_pos.y = y; }
+
+    void setZ(float z) { m_pos.z = z; }
 };
 
 
