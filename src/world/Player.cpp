@@ -6,8 +6,7 @@ void Player::update(float dt) {
     increaseRotation(0, m_currentTurnSpeed * dt, 0);
     float distance = m_currentSpeed * dt;
 
-    // player by default faces the negative z direction
-    glm::vec3 velocity(0, 0, -distance);
+    glm::vec3 velocity(0, 0, distance);
     velocity = glm::rotateY(velocity, glm::radians(getRotation().y));
     increasePosition(velocity.x, 0, velocity.z);
 

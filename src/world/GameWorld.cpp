@@ -25,7 +25,6 @@ GameWorld::~GameWorld() {
 
 void GameWorld::init(GLFWwindow* window) {
     m_window = window;
-    m_camera = new Camera(glm::vec3(-20, 10, 0), 0, 0, 0);
     m_light  = new Light(glm::vec3(0, 100, -20), glm::vec3(1, 1, 1));
 
     int width, height;
@@ -33,13 +32,14 @@ void GameWorld::init(GLFWwindow* window) {
 
     m_master = new MasterRenderer(width, height);
 
-    TexturedModel* stall  = loadObjModel("stall");
-    TexturedModel* player = loadObjModel("stall", "white");
-    m_player = new Player(player, glm::vec3(-20, 0, 20), glm::vec3(0), 1);
+//    TexturedModel* stall  = loadObjModel("stall");
+    TexturedModel* player = loadObjModel("stall");
+    m_player = new Player(player, glm::vec3(0, 0, 0), glm::vec3(0), 0.01);
+    m_camera = new Camera(m_player);
 
     m_entities.push_back(m_player);
 
-    m_models.push_back(stall);
+//    m_models.push_back(stall);
     m_models.push_back(player);
 
     m_terrains.push_back(new Terrain(0, 0));
@@ -58,6 +58,7 @@ void GameWorld::update(double deltaTime) {
     pollMouse();
 
     m_player->update(static_cast<float>(deltaTime));
+    m_camera->update();
 }
 
 void GameWorld::render() const {
@@ -75,15 +76,7 @@ void GameWorld::render() const {
 
 void GameWorld::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
 
-    if (glm::length(m_camera->getPos() - m_player->getPos()) < 5.0f) {
-        return;
-    }
-
-    if (yOffset > 0) {
-        m_camera->moveToward(m_player->getPos(), 1);
-    } else {
-        m_camera->moveToward(m_player->getPos(), -1);
-    }
+    m_camera->calculateZoom(yOffset);
 }
 
 void GameWorld::pollKeyboard() const {
@@ -107,8 +100,6 @@ void GameWorld::pollKeyboard() const {
     if (glfwGetKey(m_window, GLFW_KEY_SPACE)) {
         m_player->jump();
     }
-
-//    m_camera->moveBy(m_player->getPos());
 }
 
 void GameWorld::pollMouse() const {
@@ -121,5 +112,10 @@ void GameWorld::pollMouse() const {
     double yaw   = width / 2. - xPos;
     double pitch = height / 2. - yPos;
 
-    m_camera->rotate(glm::vec3(pitch * .1, 180 + yaw * .1, 0));
+    float changedPitch = Camera::DEFAULT_PITCH + ((float) pitch * 0.1f);
+
+    if (changedPitch > 0) {
+        m_camera->setPitch(changedPitch);
+    }
+    m_camera->setAngleAroundPlayer((float) yaw * 0.1f);
 }
