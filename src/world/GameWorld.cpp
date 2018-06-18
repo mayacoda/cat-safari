@@ -2,6 +2,7 @@
 #include <glm/glm.hpp>
 #include "../util/fileUtil.h"
 #include "GameWorld.h"
+#include "../util/helpers.h"
 
 GameWorld::~GameWorld() {
     m_master->cleanUp();
@@ -32,15 +33,32 @@ void GameWorld::init(GLFWwindow* window) {
 
     m_master = new MasterRenderer(width, height);
 
-//    TexturedModel* stall  = loadObjModel("stall");
-    TexturedModel* player = loadObjModel("stall");
-    m_player = new Player(player, glm::vec3(0, 0, 0), glm::vec3(0), 0.01);
+    TexturedModel* player = loadObjModel("player");
+    TexturedModel* tree1 = loadObjModel("tree1");
+    TexturedModel* cat1 = loadObjModel("cat", "cat_tex1");
+    TexturedModel* cat2 = loadObjModel("cat", "cat_tex2");
+    m_player = new Player(player, glm::vec3(0, 0, 0), glm::vec3(0), 1);
     m_camera = new Camera(m_player);
 
     m_entities.push_back(m_player);
 
-//    m_models.push_back(stall);
+    for (int i = 0; i < 20; i++) {
+        m_entities.push_back(new Entity(tree1, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), fRandomRange(0.5f, 2)));
+    }
+
+    for (int i = 0; i < 20; i++) {
+        m_entities.push_back(new Entity(cat1, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
+    }
+
+
+    for (int i = 0; i < 20; i++) {
+        m_entities.push_back(new Entity(cat2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
+    }
+
+
     m_models.push_back(player);
+    m_models.push_back(cat1);
+    m_models.push_back(tree1);
 
     m_terrains.push_back(new Terrain(0, 0));
     m_terrains.push_back(new Terrain(1, 0));
