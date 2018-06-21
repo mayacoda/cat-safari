@@ -32,6 +32,8 @@ public:
     void setUniform3f(const std::string &name, glm::vec3 vec3) const;
 
     void setUniformMatrix4(const std::string &name, glm::mat4 mat) const;
+
+    void setProjectionMatrix(const glm::mat4 matrix) const;
 };
 
 

@@ -8,6 +8,8 @@
 #include "../shaders/Shader.h"
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
+#include "GUIRenderer.h"
+#include "../world/GUI.h"
 
 class MasterRenderer {
 private:
@@ -15,18 +17,22 @@ private:
     EntityRenderer * m_entityRenderer;
     TerrainShader  * m_terrainShader;
     TerrainRenderer* m_terrainRenderer;
+    GUIRenderer    * m_guiRenderer;
 
     glm::mat4 m_projectionMatrix;
 
     std::map<const TexturedModel*, std::list<Entity*> > m_entities;
-    std::list<Terrain*> m_terrains;
+    std::list<Terrain*>                                 m_terrains;
+
+    int m_width;
+    int m_height;
 
 public:
     MasterRenderer(int width, int height);
 
     virtual ~MasterRenderer();
 
-    void render(const Light &light, const Camera &camera);
+    void render(const Light &light, const Camera &camera, const GUI &gui);
 
     void processEntity(Entity* entity);
 
@@ -35,6 +41,8 @@ public:
     void cleanUp();
 
     void init();
+
+    void togglePhotoView(Camera* camera);
 
     static void enableCulling() {
         debug(glEnable(GL_CULL_FACE));

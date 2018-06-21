@@ -21,3 +21,11 @@ void Player::update(float dt) {
 
 
 }
+
+void Player::moveRight() {
+    //@todo implement strafing
+}
+
+void Player::moveLeft() {
+    //@todo implement strafing
+}

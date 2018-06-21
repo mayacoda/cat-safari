@@ -5,19 +5,11 @@ Camera::Camera(Player* player) : m_pos(glm::vec3(0, 0, 0)),
                                  m_pitch(20),
                                  m_yaw(0),
                                  m_roll(0),
-                                 m_distanceFromPlayer(50),
+                                 m_isPhotoView(false),
                                  m_angleAroundPlayer(0),
+                                 m_distanceFromPlayer(50),
                                  m_player(player) {}
 
-
-Camera::Camera(Player* player, const glm::vec3 &m_pos, float m_pitch, float m_yaw, float m_roll)
-        : m_pos(m_pos),
-          m_pitch(m_pitch),
-          m_yaw(m_yaw),
-          m_roll(m_roll),
-          m_distanceFromPlayer(50),
-          m_angleAroundPlayer(0),
-          m_player(player) {}
 
 const glm::vec3 &Camera::getPos() const {
     return m_pos;
@@ -66,18 +58,16 @@ void Camera::calculateZoom(double zoom) {
     m_distanceFromPlayer = distance;
 }
 
-void Camera::moveToward(const glm::vec3 &position, float distance) {
-    glm::vec3 diff = m_pos - position;
-    if (glm::length(diff) < distance) {
-        moveTo(position);
-    } else {
-        moveTo(m_pos - glm::normalize(diff) * distance);
-    }
-}
-
 void Camera::calculatePosition() {
-    float horDist  = m_distanceFromPlayer * glm::cos(glm::radians(m_pitch));
-    float vertDist = m_distanceFromPlayer * glm::sin(glm::radians(m_pitch));
+    float horDist, vertDist;
+
+    if (!m_isPhotoView) {
+        horDist  = m_distanceFromPlayer * glm::cos(glm::radians(m_pitch));
+        vertDist = m_distanceFromPlayer * glm::sin(glm::radians(m_pitch));
+    } else {
+        horDist = -1.5f;
+        vertDist = 8.5;
+    }
 
     float y     = vertDist + m_player->getPos().y;
     float theta = m_player->getRotation().y + m_angleAroundPlayer;
@@ -87,4 +77,8 @@ void Camera::calculatePosition() {
     float z = m_player->getPos().z - horDist * glm::cos(glm::radians(theta));
 
     m_pos = glm::vec3(x, y, z);
+}
+
+void Camera::togglePhotoView() {
+    m_isPhotoView = !m_isPhotoView;
 }

@@ -10,6 +10,8 @@ glm::mat4 createTransformationMatrix(glm::vec3 const &translate, glm::vec3 const
 
 glm::mat4 createProjectionMatrix(int width, int height);
 
+glm::mat4 createPhotoViewProjectionMatrix(int width, int height);
+
 glm::mat4 createViewMatrix(const glm::vec3 &position);
 
 glm::mat4 createViewMatrix(const Camera &camera);

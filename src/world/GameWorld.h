@@ -5,6 +5,7 @@
 
 #include "../renderer/MasterRenderer.h"
 #include "Player.h"
+#include "GUI.h"
 #include <GLFW/glfw3.h>
 
 class GameWorld {
@@ -14,6 +15,7 @@ private:
     Camera        * m_camera;
     Light         * m_light;
     Player        * m_player;
+    GUI           * m_gui;
 
     GLFWwindow* m_window;
 

@@ -22,11 +22,14 @@ GameWorld::~GameWorld() {
     delete m_master;
     delete m_camera;
     delete m_light;
+    delete m_gui;
 }
 
 void GameWorld::init(GLFWwindow* window) {
     m_window = window;
     m_light  = new Light(glm::vec3(0, 100, -20), glm::vec3(1, 1, 1));
+
+    m_gui = new GUI();
 
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
@@ -35,6 +38,7 @@ void GameWorld::init(GLFWwindow* window) {
 
     TexturedModel* player = loadObjModel("player");
     TexturedModel* tree1 = loadObjModel("tree1");
+    TexturedModel* tree2 = loadObjModel("tree2");
     TexturedModel* cat1 = loadObjModel("cat", "cat_tex1");
     TexturedModel* cat2 = loadObjModel("cat", "cat_tex2");
     m_player = new Player(player, glm::vec3(0, 0, 0), glm::vec3(0), 1);
@@ -55,6 +59,10 @@ void GameWorld::init(GLFWwindow* window) {
         m_entities.push_back(new Entity(cat2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
     }
 
+
+    for (int i = 0; i < 20; i++) {
+        m_entities.push_back(new Entity(tree2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
+    }
 
     m_models.push_back(player);
     m_models.push_back(cat1);
@@ -89,7 +97,7 @@ void GameWorld::render() const {
         m_master->processTerrain(*it);
     }
 
-    m_master->render(*m_light, *m_camera);
+    m_master->render(*m_light, *m_camera, *m_gui);
 }
 
 void GameWorld::scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
@@ -115,8 +123,24 @@ void GameWorld::pollKeyboard() const {
         m_player->setTurnSpeed(0);
     }
 
+    if (glfwGetKey(m_window, GLFW_KEY_Q)) {
+        m_player->moveLeft();
+    } else if (glfwGetKey(m_window, GLFW_KEY_E)) {
+        m_player->moveRight();
+    }
+
     if (glfwGetKey(m_window, GLFW_KEY_SPACE)) {
         m_player->jump();
+    }
+
+    static bool wasPressed = false;
+    if (glfwGetKey(m_window, GLFW_KEY_C) == GLFW_PRESS) {
+        wasPressed = true;
+    }
+    if (glfwGetKey(m_window, GLFW_KEY_C) == GLFW_RELEASE && wasPressed) {
+        wasPressed = false;
+        m_master->togglePhotoView(m_camera);
+        m_gui->togglePhotoView();
     }
 }
 

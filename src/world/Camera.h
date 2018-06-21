@@ -14,6 +14,8 @@ private:
     float     m_yaw; // y rotation;
     float     m_roll; // z rotation;
 
+    bool m_isPhotoView;
+
 
     static const int MIN_ZOOM_DISTANCE = 25;
     static const int MAX_ZOOM_DISTANCE = 100;
@@ -26,9 +28,7 @@ private:
 public:
     const static float DEFAULT_PITCH = 20;
 
-    Camera(Player* player);
-
-    Camera(Player* player, const glm::vec3 &m_pos, float m_pitch, float m_yaw, float m_roll);
+    explicit Camera(Player* player);
 
     const glm::vec3 &getPos() const;
 
@@ -44,6 +44,8 @@ public:
 
     void setRoll(float roll) { m_roll = roll; }
 
+    void togglePhotoView();
+
     void setAngleAroundPlayer(float angle) { m_angleAroundPlayer = angle; }
 
     void update() {
@@ -54,7 +56,6 @@ public:
 
     void moveTo(glm::vec3 position);
 
-    void moveToward(const glm::vec3 &position, float distance);
 
     void rotateBy(glm::vec3 angles);
 
@@ -62,6 +63,7 @@ public:
 
     void calculatePosition();
 
+    bool isInPhotoView() const { return m_isPhotoView; }
 
     void rotate(glm::vec3 angles);
 

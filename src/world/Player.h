@@ -34,6 +34,10 @@ public:
     void setSpeed(int speed) { m_currentSpeed = speed; }
 
     void setTurnSpeed(int speed) { m_currentTurnSpeed = speed; }
+
+    void moveRight();
+
+    void moveLeft();
 };
 
 
