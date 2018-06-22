@@ -18,7 +18,7 @@ private:
 
 
     static const int MIN_ZOOM_DISTANCE = 25;
-    static const int MAX_ZOOM_DISTANCE = 100;
+    static const int MAX_ZOOM_DISTANCE = 10000;
 
     Player* m_player;
     float m_distanceFromPlayer;

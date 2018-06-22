@@ -26,10 +26,6 @@ glm::mat4 createPhotoViewProjectionMatrix(int width, int height) {
     return glm::perspective(glm::radians(20.0f), (float) width / (float) height, 0.001f, 1000.0f);
 }
 
-glm::mat4 createViewMatrix(const glm::vec3 &position) {
-    return glm::lookAt(position, glm::vec3(0), glm::vec3(0, 1, 0));
-}
-
 glm::mat4 createViewMatrix(const Camera &camera) {
 
     glm::mat4 rotateX = glm::rotate(glm::mat4(1.0f), glm::radians(camera.getPitch()), glm::vec3(1.0f, 0.0f, 0.0f));

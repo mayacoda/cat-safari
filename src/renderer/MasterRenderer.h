@@ -53,6 +53,8 @@ public:
         debug(glDisable(GL_CULL_FACE));
     }
 
+    glm::mat4 getProjectionMatrix() const { return m_projectionMatrix; }
+
 };
 
 

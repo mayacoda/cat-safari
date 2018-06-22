@@ -15,7 +15,7 @@ private:
     float m_upwardSpeed;
 
 public:
-    static const int   MAX_SPEED      = 20;
+    static const int   MAX_SPEED      = 50;
     static const int   MAX_TURN_SPEED = 160;
     static const int   GRAVITY        = -15;
     static const float JUMP_POWER     = 1.5;

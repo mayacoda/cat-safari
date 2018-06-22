@@ -15,6 +15,7 @@ private:
         return id++;
     }
 
+protected:
     TexturedModel* m_model;
 
     // position

@@ -23,11 +23,7 @@ private:
 
 public:
 
-    Terrain(int gridX, int gridZ) : m_x(gridX * Terrain::SIZE), m_z(gridZ * Terrain::SIZE) {
-        m_model = generateTerrain();
-        m_texturePack = new TerrainTexturePack("grass", "gravel", "terrain2", "road");
-        m_blendMap = new TerrainTexture("./res/blend_map.png");
-    }
+    Terrain(int gridX, int gridZ);
 
     float getX() const { return m_x; }
 

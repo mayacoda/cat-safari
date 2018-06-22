@@ -1,6 +1,12 @@
 
 #include "Terrain.h"
 
+Terrain::Terrain(int gridX, int gridZ) : m_x(gridX * Terrain::SIZE - Terrain::SIZE/2), m_z(gridZ * Terrain::SIZE - Terrain::SIZE/2) {
+    m_model = generateTerrain();
+    m_texturePack = new TerrainTexturePack("grass", "gravel", "terrain2", "road");
+    m_blendMap = new TerrainTexture("./res/blend_map.png");
+}
+
 Model* Terrain::generateTerrain() {
 
     int count = Terrain::VERTEX_COUNT * Terrain::VERTEX_COUNT;

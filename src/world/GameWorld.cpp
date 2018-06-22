@@ -1,8 +1,11 @@
 
 #include <glm/glm.hpp>
+#include <glm/gtx/intersect.hpp>
+#include <iomanip>
 #include "../util/fileUtil.h"
 #include "GameWorld.h"
-#include "../util/helpers.h"
+#include "EntityLoader.h"
+#include "../util/mouse-picking.h"
 
 GameWorld::~GameWorld() {
     m_master->cleanUp();
@@ -36,47 +39,18 @@ void GameWorld::init(GLFWwindow* window) {
 
     m_master = new MasterRenderer(width, height);
 
+    EntityLoader::loadTerrain("./res/terrain.txt", m_entities, m_models);
+    EntityLoader::loadCats(m_entities, m_models);
+
     TexturedModel* player = loadObjModel("player");
-    TexturedModel* tree1 = loadObjModel("tree1");
-    TexturedModel* tree2 = loadObjModel("tree2");
-    TexturedModel* cat1 = loadObjModel("cat", "cat_tex1");
-    TexturedModel* cat2 = loadObjModel("cat", "cat_tex2");
-    m_player = new Player(player, glm::vec3(0, 0, 0), glm::vec3(0), 1);
+
+    m_player = new Player(player, glm::vec3(75, 0, -40), glm::vec3(0), 1);
+    m_entities.push_back(m_player);
+    m_models.push_back(player);
+
     m_camera = new Camera(m_player);
 
-    m_entities.push_back(m_player);
-
-    for (int i = 0; i < 20; i++) {
-        m_entities.push_back(new Entity(tree1, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), fRandomRange(0.5f, 2)));
-    }
-
-    for (int i = 0; i < 20; i++) {
-        m_entities.push_back(new Entity(cat1, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
-    }
-
-
-    for (int i = 0; i < 20; i++) {
-        m_entities.push_back(new Entity(cat2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
-    }
-
-
-    for (int i = 0; i < 20; i++) {
-        m_entities.push_back(new Entity(tree2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
-    }
-
-    m_models.push_back(player);
-    m_models.push_back(cat1);
-    m_models.push_back(tree1);
-
     m_terrains.push_back(new Terrain(0, 0));
-    m_terrains.push_back(new Terrain(1, 0));
-    m_terrains.push_back(new Terrain(-1, 0));
-    m_terrains.push_back(new Terrain(0, 1));
-    m_terrains.push_back(new Terrain(1, 1));
-    m_terrains.push_back(new Terrain(-1, 1));
-    m_terrains.push_back(new Terrain(0, -1));
-    m_terrains.push_back(new Terrain(1, -1));
-    m_terrains.push_back(new Terrain(-1, -1));
 }
 
 void GameWorld::update(double deltaTime) {
@@ -145,11 +119,28 @@ void GameWorld::pollKeyboard() const {
 }
 
 void GameWorld::pollMouse() const {
+
     double xPos, yPos;
     glfwGetCursorPos(m_window, &xPos, &yPos);
 
     int height, width;
     glfwGetWindowSize(m_window, &width, &height);
+
+    if (xPos < 0 || xPos > width || yPos < 0 || yPos > height) return;
+
+    // Temporary code for creating terrain
+    if (glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT)) {
+        glm::vec3 ray = MousePicking::getWorldPosOfMouse(xPos,
+                                                         yPos,
+                                                         width,
+                                                         height,
+                                                         m_master->getProjectionMatrix(),
+                                                         createViewMatrix(*m_camera));
+        float     distance;
+        glm::intersectRayPlane(m_camera->getPos(), ray, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), distance);
+        glm::vec3 point = m_camera->getPos() + distance * ray;
+        std::cout << std::fixed << std::setprecision(0) << point.x << " " << point.z << std::endl;
+    }
 
     double yaw   = width / 2. - xPos;
     double pitch = height / 2. - yPos;
