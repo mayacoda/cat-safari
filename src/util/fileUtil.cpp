@@ -131,7 +131,7 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
 
     auto* model = new TexturedModel(va, ib, texture);
 
-    float ox = maxX - minX / 2, oy = maxY - minY / 2, oz = maxZ - minZ / 2;
+    float ox = (maxX - minX) / 2, oy = (maxY - minY) / 2, oz = (maxZ - minZ) / 2;
 
     model->setOrigin(glm::vec3(ox, oy, oz));
     model->setBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);

@@ -157,7 +157,7 @@ bool GameWorld::isCatOnScreen() const {
 
     for (auto c = m_cats.begin(); c != m_cats.end(); c++) {
         std::vector<glm::vec3> points      = (*c)->getModel()->getBoundingBox().points;
-        glm::mat4              modelMatrix = createTransformationMatrix((*c)->getPos() + (*c)->getModel()->getOrigin(),
+        glm::mat4              modelMatrix = createTransformationMatrix((*c)->getPos(),
                                                                         (*c)->getRotation(),
                                                                         (*c)->getScale());
 
@@ -168,6 +168,7 @@ bool GameWorld::isCatOnScreen() const {
                                                                      modelMatrix,
                                                                      projectionMatrix,
                                                                      viewMatrix);
+
             if (pointOnScreen.x >= 0 && pointOnScreen.x <= width &&
                 pointOnScreen.y >= 0 && pointOnScreen.y <= height) {
                 // cat is on the screen
