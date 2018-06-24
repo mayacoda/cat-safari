@@ -64,6 +64,7 @@ void GameWorld::update(double deltaTime) {
 
     m_player->update(static_cast<float>(deltaTime));
     m_camera->update();
+    m_gui->update(static_cast<float>(deltaTime));
 }
 
 void GameWorld::render() const {
@@ -167,8 +168,8 @@ bool GameWorld::isCatOnScreen() const {
                                                                      modelMatrix,
                                                                      projectionMatrix,
                                                                      viewMatrix);
-            if (pointOnScreen.x >= 10 && pointOnScreen.x <= width - 10 &&
-                pointOnScreen.y >= 10 && pointOnScreen.y <= height - 10) {
+            if (pointOnScreen.x >= 0 && pointOnScreen.x <= width &&
+                pointOnScreen.y >= 0 && pointOnScreen.y <= height) {
                 // cat is on the screen
                 std::cout << "MEOW" << std::endl;
                 return true;
@@ -181,7 +182,7 @@ bool GameWorld::isCatOnScreen() const {
 void GameWorld::mouseButtonCallback(GLFWwindow* window, int button, int action) {
     if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
         if (m_camera->isInPhotoView()) {
-            isCatOnScreen();
+            m_gui->isSuccess(isCatOnScreen());
         } else {
             double xPos, yPos;
             glfwGetCursorPos(m_window, &xPos, &yPos);
