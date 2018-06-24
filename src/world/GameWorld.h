@@ -20,12 +20,15 @@ private:
     GLFWwindow* m_window;
 
     std::vector<Entity*>  m_entities;
+    std::vector<Entity*>  m_cats;
     std::vector<Terrain*> m_terrains;
     std::vector<Model*>   m_models; // to keep track of models created so they can be deleted
 
     void pollKeyboard() const;
 
     void pollMouse() const;
+
+    bool isCatOnScreen() const;
 
 public:
 
@@ -39,6 +42,8 @@ public:
 
     // vertical scroll is the y offset
     void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+
+    void mouseButtonCallback(GLFWwindow* window, int button, int action);
 };
 
 

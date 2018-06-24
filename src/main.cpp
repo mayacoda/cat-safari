@@ -26,6 +26,8 @@ GameWorld* world = new GameWorld();
 
 void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
 int main() {
     glfwInit();
 
@@ -48,6 +50,7 @@ int main() {
     world->init(window);
 
     glfwSetScrollCallback(window, scrollCallback);
+    glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
     clock_t currentTime = clock();
 
@@ -83,3 +86,6 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset) {
     world->scrollCallback(window, xOffset, yOffset);
 }
 
+void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    world->mouseButtonCallback(window, button, action);
+}

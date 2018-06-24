@@ -37,6 +37,10 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
     std::vector<glm::vec3>    normals;
     std::vector<unsigned int> indices;
 
+    auto tmpNaN = static_cast<float>(0.0 / 0.0);
+    float maxX = tmpNaN, maxY = tmpNaN, maxZ = tmpNaN;
+    float minX = tmpNaN, minY = tmpNaN, minZ = tmpNaN;
+
     float* bufferData = nullptr;
 
     while (std::getline(inFile, line)) {
@@ -48,6 +52,13 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
         if (prefix == "v") {
             float x, y, z;
             iss >> x >> y >> z;
+
+            if (x < minX || isnan(minX)) minX = x;
+            if (x > maxX || isnan(maxX)) maxX = x;
+            if (y < minY || isnan(minY)) minY = y;
+            if (y > maxY || isnan(maxY)) maxY = y;
+            if (z < minZ || isnan(minZ)) minZ = z;
+            if (z > maxZ || isnan(maxZ)) maxZ = z;
 
             vertices.push_back(glm::vec3(x, y, z));
 
@@ -118,7 +129,14 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
 
     auto* ib = new IndexBuffer(&indices[0], static_cast<unsigned int>(indices.size()));
 
-    return new TexturedModel(va, ib, texture);
+    auto* model = new TexturedModel(va, ib, texture);
+
+    float ox = maxX - minX / 2, oy = maxY - minY / 2, oz = maxZ - minZ / 2;
+
+    model->setOrigin(glm::vec3(ox, oy, oz));
+    model->setBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
+
+    return model;
 }
 
 TexturedModel* loadObjModel(const std::string &fileName) {

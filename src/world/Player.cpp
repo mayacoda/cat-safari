@@ -1,5 +1,8 @@
 
 #include "Player.h"
+#include <algorithm>
+#include <glm/gtx/vector_angle.hpp>
+#include <glm/gtx/rotate_vector.hpp>
 
 void Player::update(float dt) {
 

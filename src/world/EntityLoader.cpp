@@ -49,11 +49,13 @@ void EntityLoader::loadCats(std::vector<Entity*> &entities, std::vector<Model*> 
     models.push_back(cat1);
     models.push_back(cat2);
 
-    for (int i = 0; i < 20; i++) {
-        entities.push_back(new Entity(cat1, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
-    }
+    entities.push_back(new Entity(cat1, glm::vec3(50, 0, -50), glm::vec3(0), 1));
 
-    for (int i = 0; i < 20; i++) {
-        entities.push_back(new Entity(cat2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
-    }
+//    for (int i = 0; i < 20; i++) {
+//        entities.push_back(new Entity(cat1, glm::vec3(iRandomRange(0, 30) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
+//    }
+
+//    for (int i = 0; i < 20; i++) {
+//        entities.push_back(new Entity(cat2, glm::vec3(iRandomRange(0, 200) - 100, 0, iRandomRange(0, 200) - 100), glm::vec3(0,iRandomRange(0, 360),0), 1));
+//    }
 }
