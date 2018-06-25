@@ -15,8 +15,8 @@ private:
 
     bool m_hasTransparency;
 
-    float m_shineDamper = 1;
-    float m_reflectivity = 0;
+    float m_shineDamper;
+    float m_reflectivity;
 
 public:
     Texture(const std::string &m_filePath, bool tile = false);

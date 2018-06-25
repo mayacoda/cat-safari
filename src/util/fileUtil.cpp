@@ -4,6 +4,8 @@
 #include <sstream>
 #include <glm/vec3.hpp>
 #include <glm/vec2.hpp>
+#include <limits>
+#include <algorithm>
 
 void processVertex(const std::string &vertexData,
                    std::vector<unsigned int> &indices,
@@ -21,7 +23,7 @@ std::string getFileContents(const std::string &filePath) {
     std::stringstream stream;
     stream << inFile.rdbuf();
     return stream.str();
-}
+} 
 
 TexturedModel* loadObjModel(const std::string &modelPath, const std::string &texturePath) {
     std::ifstream inFile("./res/models/" + modelPath + ".obj");
@@ -37,7 +39,7 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
     std::vector<glm::vec3>    normals;
     std::vector<unsigned int> indices;
 
-    auto tmpNaN = static_cast<float>(0.0 / 0.0);
+    auto tmpNaN = std::numeric_limits<float>::infinity();
     float maxX = tmpNaN, maxY = tmpNaN, maxZ = tmpNaN;
     float minX = tmpNaN, minY = tmpNaN, minZ = tmpNaN;
 
@@ -53,12 +55,12 @@ TexturedModel* loadObjModel(const std::string &modelPath, const std::string &tex
             float x, y, z;
             iss >> x >> y >> z;
 
-            if (x < minX || isnan(minX)) minX = x;
-            if (x > maxX || isnan(maxX)) maxX = x;
-            if (y < minY || isnan(minY)) minY = y;
-            if (y > maxY || isnan(maxY)) maxY = y;
-            if (z < minZ || isnan(minZ)) minZ = z;
-            if (z > maxZ || isnan(maxZ)) maxZ = z;
+            if (x < minX || minX == std::numeric_limits<float>::infinity()) minX = x;
+            if (x > maxX || maxX == std::numeric_limits<float>::infinity()) maxX = x;
+            if (y < minY || minY == std::numeric_limits<float>::infinity()) minY = y;
+            if (y > maxY || maxY == std::numeric_limits<float>::infinity()) maxY = y;
+            if (z < minZ || minZ == std::numeric_limits<float>::infinity()) minZ = z;
+            if (z > maxZ || maxZ == std::numeric_limits<float>::infinity()) maxZ = z;
 
             vertices.push_back(glm::vec3(x, y, z));
 

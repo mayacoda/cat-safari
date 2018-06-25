@@ -10,7 +10,9 @@ Texture::Texture(const std::string &path, bool tile) : m_textureId(0),
                                             m_buffer(nullptr),
                                             m_width(0),
                                             m_height(0),
-                                            m_bpp(0) {
+											m_bpp(0),
+											m_shineDamper(0),
+											m_reflectivity(0) {
     debug(glGenTextures(1, &m_textureId));
     debug(glBindTexture(GL_TEXTURE_2D, m_textureId));
 

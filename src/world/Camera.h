@@ -26,7 +26,7 @@ private:
 
 
 public:
-    const static float DEFAULT_PITCH = 20;
+    static const int DEFAULT_PITCH = 20;
 
     explicit Camera(Player* player);
 

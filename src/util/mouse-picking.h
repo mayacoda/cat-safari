@@ -15,7 +15,7 @@ namespace MousePicking {
 
         glm::vec4 toEyeCoords(const glm::vec4 &clipCoords, const glm::mat4 &projMat) {
             glm::mat4 inverted = glm::inverse(projMat);
-            glm::vec3 eyeCords = inverted * clipCoords;
+            glm::vec4 eyeCords = inverted * clipCoords;
             return glm::vec4(eyeCords.x, eyeCords.y, -1.0f, 0.0f);
         }
 

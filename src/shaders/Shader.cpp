@@ -1,5 +1,4 @@
 
-#include <GL/glew.h>
 #include <glm/vec3.hpp>
 #include <glm/detail/type_mat4x4.hpp>
 #include <glm/gtc/type_ptr.inl>

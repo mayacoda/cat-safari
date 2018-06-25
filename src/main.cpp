@@ -7,6 +7,8 @@
 #include "util/fileUtil.h"
 #include "renderer/MasterRenderer.h"
 #include "world/GameWorld.h"
+#include <ctime>
+#include <algorithm>
 
 #ifdef _WIN32
 #define TIME_CORRECTION 1.0
@@ -64,7 +66,7 @@ int main() {
 
         // update
         while (frameTime > 0.0) {
-            double deltaTime = glm::min(frameTime, dt);
+            double deltaTime = std::min(frameTime, dt);
             frameTime -= deltaTime;
             world->update(deltaTime);
             t += deltaTime;

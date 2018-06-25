@@ -18,7 +18,7 @@ public:
     static const int   MAX_SPEED      = 50;
     static const int   MAX_TURN_SPEED = 160;
     static const int   GRAVITY        = -8;
-    static const float JUMP_POWER     = 2;
+    static const int   JUMP_POWER     = 2;
 
     Player(TexturedModel* m_model, const glm::vec3 &m_pos, const glm::vec3 &m_rot, float m_scale) : Entity(m_model,
                                                                                                            m_pos,

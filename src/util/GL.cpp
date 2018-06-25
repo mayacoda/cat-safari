@@ -3,7 +3,7 @@
 
 bool GL::logCall(const char* function, const char* file, int line) {
     while (GLenum error = glGetError()) {
-        std::cout << "[OpenGL Error]: " << GL::mapErrorToMessage(error) << std::endl;
+        std::cout << "[OpenGL Error]: " << GL::mapErrorToMessage(error).c_str() << std::endl;
         std::cout << "on " << function << " in " << file << ":" << line << std::endl;
         return false;
     }

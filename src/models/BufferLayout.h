@@ -3,7 +3,6 @@
 #define SAFARI_BUFFERLAYOUT_H
 
 #include <vector>
-#include <GL/glew.h>
 #include "../util/GL.h"
 
 struct LayoutElements {

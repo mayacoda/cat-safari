@@ -9,7 +9,7 @@
 
 class Terrain {
 private:
-    const static float SIZE         = 800;
+    const static int   SIZE         = 800;
     const static int   VERTEX_COUNT = 128;
 
     float m_x;

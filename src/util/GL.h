@@ -19,6 +19,7 @@ class GL {
 
 private:
     static std::string mapErrorToMessage(unsigned int error);
+
 public:
     static void clearError();
 
