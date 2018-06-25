@@ -45,7 +45,7 @@ void GameWorld::init(GLFWwindow* window) {
     m_master = new MasterRenderer(width, height);
 
     EntityLoader::loadTerrain("./res/terrain.txt", m_entities, m_models);
-    EntityLoader::loadCats(m_cats, m_models);
+    EntityLoader::loadCats(m_cats, m_entities, m_models);
 
     TexturedModel* player = loadObjModel("player");
 
@@ -149,17 +149,21 @@ void GameWorld::pollMouse() const {
     m_camera->setAngleAroundPlayer((float) yaw * 0.1f);
 }
 
-bool GameWorld::isCatOnScreen() const {
+bool GameWorld::isCatOnScreen() {
     int       width, height;
     glm::mat4 projectionMatrix = m_master->getProjectionMatrix();
-    glm::mat4 viewMatrix       = createViewMatrix(*m_camera);
+    glm::mat4 viewMatrix       = Geometry::createViewMatrix(*m_camera);
     glfwGetWindowSize(m_window, &width, &height);
 
     for (auto c = m_cats.begin(); c != m_cats.end(); c++) {
-        std::vector<glm::vec3> points      = (*c)->getModel()->getBoundingBox().points;
-        glm::mat4              modelMatrix = createTransformationMatrix((*c)->getPos(),
-                                                                        (*c)->getRotation(),
-                                                                        (*c)->getScale());
+        Entity* cat = *c;
+        if (m_photographed.find(cat->getId()) != m_photographed.end()) {
+            continue;
+        }
+        std::vector<glm::vec3> points      = cat->getModel()->getBoundingBox().points;
+        glm::mat4              modelMatrix = Geometry::createTransformationMatrix(cat->getPos(),
+                                                                                  cat->getRotation(),
+                                                                                  cat->getScale());
 
         for (auto p = points.begin(); p != points.end(); p++) {
             glm::vec2 pointOnScreen = MousePicking::worldToScreenPos(*p,
@@ -172,7 +176,10 @@ bool GameWorld::isCatOnScreen() const {
             if (pointOnScreen.x >= 0 && pointOnScreen.x <= width &&
                 pointOnScreen.y >= 0 && pointOnScreen.y <= height) {
                 // cat is on the screen
-                std::cout << "MEOW" << std::endl;
+                int id = cat->getId();
+
+                m_photographed.insert(id);
+                std::cout << "MEOW: " << (*c)->getId() << std::endl;
                 return true;
             }
         }
@@ -181,30 +188,27 @@ bool GameWorld::isCatOnScreen() const {
 }
 
 void GameWorld::mouseButtonCallback(GLFWwindow* window, int button, int action) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
-        if (m_camera->isInPhotoView()) {
-            m_gui->isSuccess(isCatOnScreen());
-        } else {
-            double xPos, yPos;
-            glfwGetCursorPos(m_window, &xPos, &yPos);
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && m_camera->isInPhotoView()) {
+        m_gui->isSuccess(isCatOnScreen());
 
-            int height, width;
-            glfwGetWindowSize(m_window, &width, &height);
-
-            if (xPos < 0 || xPos > width || yPos < 0 || yPos > height) return;
-
-            glm::vec3 ray = MousePicking::getWorldPosOfMouse(xPos,
-                                                             yPos,
-                                                             width,
-                                                             height,
-                                                             m_master->getProjectionMatrix(),
-                                                             createViewMatrix(*m_camera));
-
-            float distance;
-            glm::intersectRayPlane(m_camera->getPos(), ray, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), distance);
-            glm::vec3 point = m_camera->getPos() + distance * ray;
-
-        }
+//            double xPos, yPos;
+//            glfwGetCursorPos(m_window, &xPos, &yPos);
+//
+//            int height, width;
+//            glfwGetWindowSize(m_window, &width, &height);
+//
+//            if (xPos < 0 || xPos > width || yPos < 0 || yPos > height) return;
+//
+//            glm::vec3 ray = MousePicking::screenToWorldPos(xPos,
+//                                                           yPos,
+//                                                           width,
+//                                                           height,
+//                                                           m_master->getProjectionMatrix(),
+//                                                           Geometry::createViewMatrix(*m_camera));
+//
+//            float distance;
+//            glm::intersectRayPlane(m_camera->getPos(), ray, glm::vec3(0, 0, 0), glm::vec3(0, 1, 0), distance);
+//            glm::vec3 point = m_camera->getPos() + distance * ray;
     }
 
 }

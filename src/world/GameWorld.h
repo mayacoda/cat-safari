@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "GUI.h"
 #include <GLFW/glfw3.h>
+#include <set>
 
 class GameWorld {
 
@@ -24,11 +25,13 @@ private:
     std::vector<Terrain*> m_terrains;
     std::vector<Model*>   m_models; // to keep track of models created so they can be deleted
 
+    std::set<int> m_photographed;
+
     void pollKeyboard() const;
 
     void pollMouse() const;
 
-    bool isCatOnScreen() const;
+    bool isCatOnScreen();
 
 public:
 

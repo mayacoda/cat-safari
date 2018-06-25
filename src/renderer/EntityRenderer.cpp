@@ -35,7 +35,7 @@ void EntityRenderer::render(const std::map<const TexturedModel*, std::list<Entit
 }
 
 void EntityRenderer::prepareInstance(const Entity &entity) const {
-    glm::mat4 transformationMatrix = createTransformationMatrix(entity.getPos(),
+    glm::mat4 transformationMatrix = Geometry::createTransformationMatrix(entity.getPos(),
                                                                 entity.getRotation(),
                                                                 entity.getScale());
     m_shader->loadTransformationMatrix(transformationMatrix);

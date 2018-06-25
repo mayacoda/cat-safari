@@ -102,3 +102,21 @@ tree2 tree2 164 -161 0 7
 tree2 tree2 174 -205 0 8
 tree2 tree2 99 -268 0 8
 tree2 tree2 160 -265 0 6
+#
+house house 25 169 0 15
+house house -13 161 0 10
+house house -65 157 0 15
+house house 29 235 90 18
+house house -27 231 0 18
+house house -100 254 0 15
+house house -155 240 0 14
+house house -221 148 40 20
+house house -132 166 0 20
+#
+tree3 tree1 -185 187 20 8
+tree3 tree2 -169 136 0 6
+tree2 tree3 -90 156 0 8
+tree1 tree2 -181 124 0 3
+tree3 tree2 -207 248 0 7
+tree2 tree1 -71 190 0 10
+tree2 tree1 50 142 0 10

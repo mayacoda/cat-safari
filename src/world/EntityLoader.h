@@ -15,7 +15,7 @@ namespace EntityLoader {
                             std::vector<Entity*> &entities,
                             std::vector<Model*> &models);
 
-    void loadCats(std::vector<Entity*> &entities, std::vector<Model*> &models);
+    void loadCats(std::vector<Entity*> &entities, std::vector<Entity*> &obstacles, std::vector<Model*> &models);
 };
 
 

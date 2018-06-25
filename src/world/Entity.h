@@ -61,6 +61,8 @@ public:
 
     const glm::vec3 &getRotation() const { return m_rot; }
 
+    const int getId() const { return m_id; }
+
     const float getScale() const {
         return m_scale;
     }

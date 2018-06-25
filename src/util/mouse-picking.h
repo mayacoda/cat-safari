@@ -27,12 +27,12 @@ namespace MousePicking {
         }
     }
 
-    glm::vec3 getWorldPosOfMouse(double x,
-                                 double y,
-                                 int width,
-                                 int height,
-                                 const glm::mat4 &projMat,
-                                 const glm::mat4 &viewMat) {
+    glm::vec3 screenToWorldPos(double x,
+                               double y,
+                               int width,
+                               int height,
+                               const glm::mat4 &projMat,
+                               const glm::mat4 &viewMat) {
 
         glm::vec2 openGLCoords = toOpenGLCoords(x, y, width, height);
         // make ray pointing into screen
@@ -54,8 +54,8 @@ namespace MousePicking {
         glm::vec4 position =  viewMat * projMat * posInWorld;
 
         // perspective divide
-        float pX = position.x / position.z;
-        float pY = position.y / position.z;
+        float pX = position.x / -position.z;
+        float pY = position.y / -position.z;
 
         // convert to pixels on screen
         auto x = static_cast<float>(((pX + 1) / 2.0) * width);

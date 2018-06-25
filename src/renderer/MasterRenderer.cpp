@@ -4,7 +4,7 @@
 
 MasterRenderer::MasterRenderer(int width, int height) : m_width(width), m_height(height) {
     init();
-    m_projectionMatrix = createProjectionMatrix(width, height);
+    m_projectionMatrix = Geometry::createProjectionMatrix(width, height);
 
     m_entityShader   = new StaticShader();
     m_entityRenderer = new EntityRenderer(m_entityShader, m_projectionMatrix);
@@ -92,9 +92,9 @@ void MasterRenderer::togglePhotoView(Camera* camera) {
     camera->togglePhotoView();
 
     if (camera->isInPhotoView()) {
-        m_projectionMatrix = createPhotoViewProjectionMatrix(m_width, m_height);
+        m_projectionMatrix = Geometry::createPhotoViewProjectionMatrix(m_width, m_height);
     } else {
-        m_projectionMatrix = createProjectionMatrix(m_width, m_height);
+        m_projectionMatrix = Geometry::createProjectionMatrix(m_width, m_height);
     }
 
     m_entityShader->bind();

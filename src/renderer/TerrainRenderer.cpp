@@ -2,7 +2,7 @@
 #include "TerrainRenderer.h"
 
 void TerrainRenderer::loadModelMatrix(Terrain* terrain) const {
-    glm::mat4 transformationMatrix = createTransformationMatrix(glm::vec3(terrain->getX(), 0, terrain->getZ()),
+    glm::mat4 transformationMatrix = Geometry::createTransformationMatrix(glm::vec3(terrain->getX(), 0, terrain->getZ()),
                                                                 glm::vec3(0), 1);
     m_shader->loadTransformationMatrix(transformationMatrix);
     m_shader->connectTextureSlots();
