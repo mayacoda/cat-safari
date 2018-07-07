@@ -107,12 +107,6 @@ void GameWorld::pollKeyboard() const {
         m_player->setTurnSpeed(0);
     }
 
-    if (glfwGetKey(m_window, GLFW_KEY_Q)) {
-        m_player->moveLeft();
-    } else if (glfwGetKey(m_window, GLFW_KEY_E)) {
-        m_player->moveRight();
-    }
-
     if (glfwGetKey(m_window, GLFW_KEY_SPACE)) {
         m_player->jump();
     }

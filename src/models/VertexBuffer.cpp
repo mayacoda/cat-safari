@@ -7,7 +7,6 @@ VertexBuffer::VertexBuffer(const void* data, unsigned int size) {
 
     debug(glGenBuffers(1, &m_vboId));
     debug(glBindBuffer(GL_ARRAY_BUFFER, m_vboId));
-    // @todo abstract GL_STATIC_DRAW because for some models it will be dynamic
     debug(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
 }
 

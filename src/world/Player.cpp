@@ -24,15 +24,3 @@ void Player::update(float dt) {
 
 
 }
-
-void Player::moveRight() {
-    //@todo implement strafing
-    m_pos.x += -cos(m_rot.y);
-    m_pos.z += -sin(m_rot.y);
-}
-
-void Player::moveLeft() {
-    //@todo implement strafing
-    m_pos.x += cos(m_rot.y);
-    m_pos.z += sin(m_rot.y);
-}
