@@ -19,6 +19,7 @@ Model* Terrain::generateTerrain() {
 
         for (int j = 0; j < Terrain::VERTEX_COUNT; j++) {
 
+            // position
             vertices[vertexPointer]     = (float) j / ((float) Terrain::VERTEX_COUNT - 1) * SIZE;
             vertices[vertexPointer + 1] = 0;
             vertices[vertexPointer + 2] = (float) i / ((float) Terrain::VERTEX_COUNT - 1) * SIZE;

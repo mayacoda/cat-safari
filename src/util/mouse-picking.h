@@ -50,8 +50,10 @@ namespace MousePicking {
         // where the model is bound within the world
         glm::vec4 posInWorld = modelMat * glm::vec4(worldPos.x, worldPos.y, worldPos.z, 1);
 
+        glm::vec4 posRelativeToCam = viewMat * posInWorld;
+
         // world space to eye space to projection plane
-        glm::vec4 position =  viewMat * projMat * posInWorld;
+        glm::vec4 position = projMat * posRelativeToCam;
 
         // perspective divide
         float pX = position.x / -position.z;
