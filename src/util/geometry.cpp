@@ -19,11 +19,11 @@ glm::mat4 Geometry::createTransformationMatrix(const glm::vec3 &translate, const
 }
 
 glm::mat4 Geometry::createProjectionMatrix(int width, int height) {
-    return glm::perspective(glm::radians(50.0f), (float) width / (float) height, 0.001f, 1000.0f);
+    return glm::perspective(glm::radians(CAMERA_ANGLE), (float) width / (float) height, NEAR, FAR);
 }
 
 glm::mat4 Geometry::createPhotoViewProjectionMatrix(int width, int height) {
-    return glm::perspective(glm::radians(20.0f), (float) width / (float) height, 0.001f, 1000.0f);
+    return glm::perspective(glm::radians(PHOTO_ANGLE), (float) width / (float) height, NEAR, FAR);
 }
 
 glm::mat4 Geometry::createViewMatrix(const Camera &camera) {

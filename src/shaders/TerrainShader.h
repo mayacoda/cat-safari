@@ -15,7 +15,7 @@ public:
 
     void loadProjectionMatrix(const glm::mat4 &matrix) const;
 
-    void loadViewMatrix(Camera camera) const;
+    void loadViewMatrix(const Camera &camera) const;
 
     void loadLight(Light light) const;
 

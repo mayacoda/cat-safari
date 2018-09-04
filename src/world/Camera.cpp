@@ -1,14 +1,21 @@
 
 #include "Camera.h"
+#include "../util/geometry.h"
 
-Camera::Camera(Player* player) : m_pos(glm::vec3(0, 0, 0)),
-                                 m_pitch(20),
-                                 m_yaw(0),
-                                 m_roll(0),
-                                 m_isPhotoView(false),
-                                 m_angleAroundPlayer(0),
-                                 m_distanceFromPlayer(50),
-                                 m_player(player) {}
+Camera::Camera(Player* player, float ratio) : m_pos(glm::vec3(0, 0, 0)),
+                                              m_pitch(20),
+                                              m_yaw(0),
+                                              m_roll(0),
+                                              m_isPhotoView(false),
+                                              m_angleAroundPlayer(0),
+                                              m_distanceFromPlayer(50),
+                                              m_player(player) {
+    m_frustum = new Frustum();
+    m_frustum->setCameraInternals(m_isPhotoView ? Geometry::PHOTO_ANGLE : Geometry::CAMERA_ANGLE,
+                                  ratio,
+                                  Geometry::NEAR,
+                                  Geometry::FAR);
+}
 
 
 const glm::vec3 &Camera::getPos() const {
@@ -77,8 +84,48 @@ void Camera::calculatePosition() {
     float z = m_player->getPos().z - horDist * glm::cos(glm::radians(theta));
 
     m_pos = glm::vec3(x, y, z);
+
+    float xzLength = glm::cos(glm::radians(m_pitch));
+    float dirX = xzLength * glm::sin(glm::radians(m_yaw));
+    float dirY = glm::sin(glm::radians(-m_pitch));
+    float dirZ = -xzLength * glm::cos(glm::radians(-m_yaw));
+    glm::vec3 dirCalc = glm::normalize(glm::vec3(dirX, dirY, dirZ));
+
+    glm::vec3 lookAt = m_pos + dirCalc;
+
+    m_frustum->setCameraDef(m_pos, lookAt, glm::vec3(0, 1, 0));
 }
 
-void Camera::togglePhotoView() {
+void Camera::togglePhotoView(int width, int height) {
     m_isPhotoView = !m_isPhotoView;
+
+    m_frustum->setCameraInternals(m_isPhotoView ? Geometry::PHOTO_ANGLE : Geometry::CAMERA_ANGLE,
+                                  (float) width / (float) height,
+                                  Geometry::NEAR,
+                                  Geometry::FAR);
+}
+
+bool Camera::isInView(Entity* entity) const {
+    std::vector<glm::vec3> points = entity->getModel()->getBoundingBox().points;
+
+
+    for (auto it = points.begin(); it != points.end(); ++it) {
+        glm::mat4 modelMatrix = Geometry::createTransformationMatrix(entity->getPos(),
+                                                                     entity->getRotation(),
+                                                                     entity->getScale());
+
+        glm::vec4 worldPos = modelMatrix * glm::vec4((*it), 1);
+
+        Frustum::POINT_STATE state = m_frustum->pointInFrustum(glm::vec3(worldPos));
+        if (state != Frustum::OUTSIDE) {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
+Camera::~Camera() {
+    delete m_frustum;
 }

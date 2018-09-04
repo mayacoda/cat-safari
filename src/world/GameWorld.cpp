@@ -53,7 +53,7 @@ void GameWorld::init(GLFWwindow* window) {
     m_entities.push_back(m_player);
     m_models.push_back(player);
 
-    m_camera = new Camera(m_player);
+    m_camera = new Camera(m_player, (float) width/ (float) height);
 
     m_terrains.push_back(new Terrain(0, 0));
 }
@@ -69,12 +69,19 @@ void GameWorld::update(double deltaTime) {
 
 void GameWorld::render() const {
 
+    m_objectsDrawn = 0;
     for (auto it = m_entities.begin(); it != m_entities.end(); it++) {
-        m_master->processEntity(*it);
+        if (m_camera->isInView(*it)) {
+            m_master->processEntity(*it);
+            m_objectsDrawn++;
+        }
     }
 
     for (auto it = m_cats.begin(); it != m_cats.end(); it++) {
-        m_master->processEntity(*it);
+        if (m_camera->isInView(*it)) {
+            m_master->processEntity(*it);
+            m_objectsDrawn++;
+        }
     }
 
     for (auto it = m_terrains.begin(); it != m_terrains.end(); it++) {

@@ -27,6 +27,8 @@ private:
 
     std::set<int> m_photographed;
 
+    mutable int m_objectsDrawn;
+
     void pollKeyboard() const;
 
     void pollMouse() const;
