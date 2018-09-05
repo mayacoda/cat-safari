@@ -39,41 +39,22 @@ void Frustum::setCameraDef(const glm::vec3 &position, const glm::vec3 &lookAt, c
     fbl = fc - y * fh - x * fw;
     fbr = fc - y * fh + x * fw;
 
-    planes[TOP]->setPoints(ntr, ntl, ftl);
-    planes[BOTTOM]->setPoints(nbl, nbr, fbr);
-    planes[LEFT]->setPoints(ntl, nbl, fbl);
-    planes[RIGHT]->setPoints(ntr, ftr, fbr);
-    planes[NEAR]->setPoints(ntl, ntr, nbr);
-    planes[FAR]->setPoints(ftr, ftl, fbl);
+    m_hexahedron->setPlanePoints(Hexahedron::TOP, ntr, ntl, ftl);
+    m_hexahedron->setPlanePoints(Hexahedron::BOTTOM, nbl, nbr, fbr);
+    m_hexahedron->setPlanePoints(Hexahedron::LEFT, ntl, nbl, fbl);
+    m_hexahedron->setPlanePoints(Hexahedron::RIGHT, ntr, ftr, fbr);
+    m_hexahedron->setPlanePoints(Hexahedron::NEAR, ntl, ntr, nbr);
+    m_hexahedron->setPlanePoints(Hexahedron::FAR, ftr, ftl, fbl);
 }
 
-Frustum::POINT_STATE Frustum::pointInFrustum(const glm::vec3 &point) const {
-
-    int       i  = 0;
-    for (auto it = planes.begin(); it != planes.end(); ++it) {
-        float d = (*it)->distance(point);
-
-        if (d < 0) {
-            return OUTSIDE;
-        }
-        if (d == 0) {
-            return INTERSECT;
-        }
-        ++i;
-    }
-
-    return INSIDE;
+Hexahedron::POINT_STATE Frustum::pointInFrustum(const glm::vec3 &point) const {
+    return m_hexahedron->isInside(point);
 }
 
 Frustum::Frustum() {
-    planes.reserve(6);
-    for (int i = 0; i < 6; i++) {
-        planes.push_back(new Plane());
-    }
+    m_hexahedron = new Hexahedron();
 }
 
 Frustum::~Frustum() {
-    for (auto it = planes.begin(); it != planes.end(); ++it) {
-        delete *it;
-    }
+    delete m_hexahedron;
 }

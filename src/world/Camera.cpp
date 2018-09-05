@@ -116,8 +116,8 @@ bool Camera::isInView(Entity* entity) const {
 
         glm::vec4 worldPos = modelMatrix * glm::vec4((*it), 1);
 
-        Frustum::POINT_STATE state = m_frustum->pointInFrustum(glm::vec3(worldPos));
-        if (state != Frustum::OUTSIDE) {
+        Hexahedron::POINT_STATE state = m_frustum->pointInFrustum(glm::vec3(worldPos));
+        if (state != Hexahedron::OUTSIDE) {
             return true;
         }
     }

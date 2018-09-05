@@ -62,7 +62,7 @@ void GameWorld::update(double deltaTime) {
     pollKeyboard();
     pollMouse();
 
-    m_player->update(static_cast<float>(deltaTime));
+    m_player->update(static_cast<float>(deltaTime), m_entities);
     m_camera->update();
     m_gui->update(static_cast<float>(deltaTime));
 }
@@ -83,6 +83,8 @@ void GameWorld::render() const {
             m_objectsDrawn++;
         }
     }
+
+//    std::cout << "Objects drawn " << m_objectsDrawn << std::endl;
 
     for (auto it = m_terrains.begin(); it != m_terrains.end(); it++) {
         m_master->processTerrain(*it);

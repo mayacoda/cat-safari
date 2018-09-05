@@ -33,8 +33,6 @@ public:
            const glm::vec3 &m_rot,
            float m_scale);
 
-    Entity(TexturedModel* model);
-
     virtual ~Entity() {}
 
     void increasePosition(float dx, float dy, float dz);
