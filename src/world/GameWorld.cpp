@@ -225,6 +225,12 @@ void GameWorld::mouseButtonCallback(GLFWwindow* window, int button, int action) 
 
         // clicked on new game
         if (xPos >= 313 && xPos <= 711 && yPos >= 170 && yPos <= 320) {
+			m_photographed.clear();
+			m_entities.clear();
+			m_cats.clear();
+
+			init(m_window, m_state);
+			
             m_state->setState(GameState::play);
         }
 
