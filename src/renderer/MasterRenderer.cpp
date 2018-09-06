@@ -89,7 +89,7 @@ void MasterRenderer::processTerrain(Terrain* terrain) {
 }
 
 void MasterRenderer::togglePhotoView(Camera* camera) {
-    camera->togglePhotoView();
+    camera->togglePhotoView(m_width, m_height);
 
     if (camera->isInPhotoView()) {
         m_projectionMatrix = Geometry::createPhotoViewProjectionMatrix(m_width, m_height);

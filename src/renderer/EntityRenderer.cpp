@@ -18,6 +18,7 @@ void EntityRenderer::render(const std::map<const TexturedModel*, std::list<Entit
         model.bind();
         const Texture &texture = model.getTexture();
         m_shader->loadSpecular(texture.getShineDamper(), texture.getReflectivity());
+
         if (texture.getTransparency()) {
             MasterRenderer::disableCulling();
         }

@@ -15,8 +15,8 @@ private:
     float m_upwardSpeed;
 
 public:
-    static const int   MAX_SPEED      = 50;
-    static const int   MAX_TURN_SPEED = 160;
+    static const int   MAX_SPEED      = 30;
+    static const int   MAX_TURN_SPEED = 120;
     static const int   GRAVITY        = -8;
     static const int   JUMP_POWER     = 2;
 
@@ -28,17 +28,13 @@ public:
                                                                                                     m_currentTurnSpeed(0),
                                                                                                     m_upwardSpeed(0) {}
 
-    void update(float dt);
+    void update(float dt, const std::vector<Entity*> &obstacles);
 
     void jump() { if (getPos().y == 0) { m_upwardSpeed = JUMP_POWER; }}
 
     void setSpeed(int speed) { m_currentSpeed = speed; }
 
     void setTurnSpeed(int speed) { m_currentTurnSpeed = speed; }
-
-    void moveRight();
-
-    void moveLeft();
 };
 
 

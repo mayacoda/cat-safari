@@ -25,7 +25,7 @@ add_executable(safari
         src/world/Camera.cpp
         src/world/Entity.cpp
         src/world/Light.cpp
-        src/world/GameWorld.cpp src/world/Terrain.cpp src/world/Terrain.h src/shaders/TerrainShader.cpp src/shaders/TerrainShader.h src/renderer/TerrainRenderer.cpp src/renderer/TerrainRenderer.h src/texture/TerrainTexture.cpp src/texture/TerrainTexture.h src/texture/TerrainTexturePack.cpp src/texture/TerrainTexturePack.h src/world/Player.cpp src/world/Player.h src/util/helpers.h src/world/GUI.cpp src/world/GUI.h src/renderer/GUIRenderer.cpp src/renderer/GUIRenderer.h src/shaders/GUIShader.cpp src/shaders/GUIShader.h src/texture/GUITexture.cpp src/texture/GUITexture.h src/world/EntityLoader.cpp src/world/EntityLoader.h src/util/mouse-picking.h)
+        src/world/GameWorld.cpp src/world/Terrain.cpp src/world/Terrain.h src/shaders/TerrainShader.cpp src/shaders/TerrainShader.h src/renderer/TerrainRenderer.cpp src/renderer/TerrainRenderer.h src/texture/TerrainTexture.cpp src/texture/TerrainTexture.h src/texture/TerrainTexturePack.cpp src/texture/TerrainTexturePack.h src/world/Player.cpp src/world/Player.h src/util/helpers.h src/world/GUI.cpp src/world/GUI.h src/renderer/GUIRenderer.cpp src/renderer/GUIRenderer.h src/shaders/GUIShader.cpp src/shaders/GUIShader.h src/texture/GUITexture.cpp src/texture/GUITexture.h src/world/EntityLoader.cpp src/world/EntityLoader.h src/util/mouse-picking.h src/util/Frustum.cpp src/util/Frustum.h src/util/Collisions.cpp src/util/Collisions.h src/util/Hexahedron.cpp src/util/Hexahedron.h src/util/Plane.cpp src/util/Plane.h src/world/GameState.cpp src/world/GameState.h)
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)

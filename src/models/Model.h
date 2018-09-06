@@ -5,13 +5,23 @@
 
 #include <glm/vec3.hpp>
 #include <list>
+#include <glm/detail/type_mat4x4.hpp>
 #include "../shaders/Shader.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "../texture/Texture.h"
+#include "../util/Hexahedron.h"
 
 struct BoundingBox {
     std::vector<glm::vec3> points;
+
+    std::vector<glm::vec3> transformPoints(const glm::mat4 &modelMat) const {
+        std::vector<glm::vec3> transformed;
+        for (auto              it = points.begin(); it != points.end(); ++it) {
+            transformed.push_back(glm::vec3(modelMat * glm::vec4((*it), 1)));
+        }
+        return transformed;
+    }
 };
 
 class Model {

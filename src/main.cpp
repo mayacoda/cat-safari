@@ -7,6 +7,8 @@
 #include "util/fileUtil.h"
 #include "renderer/MasterRenderer.h"
 #include "world/GameWorld.h"
+#include "util/config.h"
+#include "world/GameState.h"
 #include <ctime>
 #include <algorithm>
 
@@ -16,7 +18,7 @@
 #define TIME_CORRECTION 0.1 // make slower
 #endif
 
-#define DEBUG true
+bool EXTREME_CULLING;
 
 // Window dimensions
 const GLuint WIDTH = 1024, HEIGHT = 720;
@@ -31,6 +33,7 @@ void scrollCallback(GLFWwindow* window, double xOffset, double yOffset);
 void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 int main() {
+
     glfwInit();
 
     srand(time(nullptr));
@@ -49,7 +52,8 @@ int main() {
     glewExperimental = GL_TRUE;
     glewInit();
 
-    world->init(window);
+    GameState* game = new GameState();
+    world->init(window, game);
 
     glfwSetScrollCallback(window, scrollCallback);
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
@@ -59,7 +63,7 @@ int main() {
     clock_t currentTime = clock();
 
     // Game loop
-    while (!glfwWindowShouldClose(window)) {
+    while (!glfwWindowShouldClose(window) && game->getState() != GameState::exit) {
         glfwPollEvents();
 
         clock_t newTime   = clock();

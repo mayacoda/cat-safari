@@ -6,6 +6,7 @@
 #include "../renderer/MasterRenderer.h"
 #include "Player.h"
 #include "GUI.h"
+#include "GameState.h"
 #include <GLFW/glfw3.h>
 #include <set>
 
@@ -20,12 +21,16 @@ private:
 
     GLFWwindow* m_window;
 
+    GameState* m_state;
+
     std::vector<Entity*>  m_entities;
     std::vector<Entity*>  m_cats;
     std::vector<Terrain*> m_terrains;
     std::vector<Model*>   m_models; // to keep track of models created so they can be deleted
 
     std::set<int> m_photographed;
+
+    mutable int m_objectsDrawn;
 
     void pollKeyboard() const;
 
@@ -37,7 +42,7 @@ public:
 
     virtual ~GameWorld();
 
-    void init(GLFWwindow* window);
+    void init(GLFWwindow* window, GameState* state);
 
     void update(double deltaTime);
 

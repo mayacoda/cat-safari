@@ -33,11 +33,12 @@ GameWorld::~GameWorld() {
     delete m_gui;
 }
 
-void GameWorld::init(GLFWwindow* window) {
+void GameWorld::init(GLFWwindow* window, GameState* state) {
     m_window = window;
     m_light  = new Light(glm::vec3(0, 100, -20), glm::vec3(1, 1, 1));
+    m_state  = state;
 
-    m_gui = new GUI();
+    m_gui = new GUI(m_state);
 
     int width, height;
     glfwGetWindowSize(m_window, &width, &height);
@@ -53,7 +54,7 @@ void GameWorld::init(GLFWwindow* window) {
     m_entities.push_back(m_player);
     m_models.push_back(player);
 
-    m_camera = new Camera(m_player);
+    m_camera = new Camera(m_player, (float) width / (float) height);
 
     m_terrains.push_back(new Terrain(0, 0));
 }
@@ -62,23 +63,38 @@ void GameWorld::update(double deltaTime) {
     pollKeyboard();
     pollMouse();
 
-    m_player->update(static_cast<float>(deltaTime));
-    m_camera->update();
-    m_gui->update(static_cast<float>(deltaTime));
+    if (m_state->getState() == GameState::play) {
+        m_player->update(static_cast<float>(deltaTime), m_entities);
+        m_camera->update();
+        m_gui->update(static_cast<float>(deltaTime));
+    }
 }
 
 void GameWorld::render() const {
 
-    for (auto it = m_entities.begin(); it != m_entities.end(); it++) {
-        m_master->processEntity(*it);
-    }
+    if (m_state->getState() == GameState::play) {
+        m_objectsDrawn = 0;
 
-    for (auto it = m_cats.begin(); it != m_cats.end(); it++) {
-        m_master->processEntity(*it);
-    }
+        for (auto it = m_entities.begin(); it != m_entities.end(); it++) {
+            if (m_camera->isInView(*it)) {
+                m_master->processEntity(*it);
+                m_objectsDrawn++;
+            }
+        }
 
-    for (auto it = m_terrains.begin(); it != m_terrains.end(); it++) {
-        m_master->processTerrain(*it);
+        for (auto it = m_cats.begin(); it != m_cats.end(); it++) {
+            if (m_camera->isInView(*it)) {
+                m_master->processEntity(*it);
+                m_objectsDrawn++;
+            }
+        }
+
+        std::cout << "Objects drawn " << m_objectsDrawn << std::endl;
+
+        for (auto it = m_terrains.begin(); it != m_terrains.end(); it++) {
+            m_master->processTerrain(*it);
+        }
+
     }
 
     m_master->render(*m_light, *m_camera, *m_gui);
@@ -90,6 +106,15 @@ void GameWorld::scrollCallback(GLFWwindow* window, double xOffset, double yOffse
 }
 
 void GameWorld::pollKeyboard() const {
+
+    GameState::STATE state = m_state->getState();
+
+    if (state == GameState::menu) return;
+
+    if (glfwGetKey(m_window, GLFW_KEY_ESCAPE)) {
+        m_state->setState(GameState::menu);
+        return;
+    }
 
     if (glfwGetKey(m_window, GLFW_KEY_W)) {
         m_player->setSpeed(Player::MAX_SPEED);
@@ -107,12 +132,6 @@ void GameWorld::pollKeyboard() const {
         m_player->setTurnSpeed(0);
     }
 
-    if (glfwGetKey(m_window, GLFW_KEY_Q)) {
-        m_player->moveLeft();
-    } else if (glfwGetKey(m_window, GLFW_KEY_E)) {
-        m_player->moveRight();
-    }
-
     if (glfwGetKey(m_window, GLFW_KEY_SPACE)) {
         m_player->jump();
     }
@@ -126,9 +145,11 @@ void GameWorld::pollKeyboard() const {
         m_master->togglePhotoView(m_camera);
         m_gui->togglePhotoView();
     }
+
 }
 
 void GameWorld::pollMouse() const {
+    if (!(m_state->getState() == GameState::play)) return;
 
     double xPos, yPos;
     glfwGetCursorPos(m_window, &xPos, &yPos);
@@ -179,6 +200,9 @@ bool GameWorld::isCatOnScreen() {
                 int id = cat->getId();
 
                 m_photographed.insert(id);
+                if (m_photographed.size() == m_cats.size()) {
+                    m_state->setState(GameState::win);
+                }
                 return true;
             }
         }
@@ -187,8 +211,26 @@ bool GameWorld::isCatOnScreen() {
 }
 
 void GameWorld::mouseButtonCallback(GLFWwindow* window, int button, int action) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS && m_camera->isInPhotoView()) {
+    if (m_state->getState() == GameState::play &&
+        button == GLFW_MOUSE_BUTTON_LEFT &&
+        action == GLFW_PRESS &&
+        m_camera->isInPhotoView()) {
+
         m_gui->isSuccess(isCatOnScreen());
     }
 
+    if (m_state->getState() == GameState::menu && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double xPos, yPos;
+        glfwGetCursorPos(window, &xPos, &yPos);
+
+        // clicked on new game
+        if (xPos >= 313 && xPos <= 711 && yPos >= 170 && yPos <= 320) {
+            m_state->setState(GameState::play);
+        }
+
+        // clicked on exit
+        if (xPos >= 313 && xPos <= 711 && yPos >= 407 && yPos <= 557) {
+            m_state->setState(GameState::exit);
+        }
+    }
 }

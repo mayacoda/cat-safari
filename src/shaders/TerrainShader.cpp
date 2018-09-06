@@ -10,7 +10,7 @@ void TerrainShader::loadTransformationMatrix(const glm::mat4 &matrix) const {
     setUniformMatrix4("u_transformationMatrix", matrix);
 }
 
-void TerrainShader::loadViewMatrix(Camera camera) const {
+void TerrainShader::loadViewMatrix(const Camera &camera) const {
     glm::mat4 viewMatrix = Geometry::createViewMatrix(camera);
     setUniformMatrix4("u_viewMatrix", viewMatrix);
 }

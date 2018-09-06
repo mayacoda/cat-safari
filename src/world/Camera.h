@@ -3,9 +3,9 @@
 #define SAFARI_CAMERA_H
 
 
-#include <glm/vec3.hpp>
-#include <glm/gtx/rotate_vector.hpp>
+#include <glm/fwd.hpp>
 #include "Player.h"
+#include "../util/Frustum.h"
 
 class Camera {
 private:
@@ -16,6 +16,7 @@ private:
 
     bool m_isPhotoView;
 
+    Frustum* m_frustum;
 
     static const int MIN_ZOOM_DISTANCE = 25;
     static const int MAX_ZOOM_DISTANCE = 10000;
@@ -28,7 +29,9 @@ private:
 public:
     static const int DEFAULT_PITCH = 20;
 
-    explicit Camera(Player* player);
+    explicit Camera(Player* player, float ratio);
+
+    virtual ~Camera();
 
     const glm::vec3 &getPos() const;
 
@@ -44,7 +47,7 @@ public:
 
     void setRoll(float roll) { m_roll = roll; }
 
-    void togglePhotoView();
+    void togglePhotoView(int width, int height);
 
     void setAngleAroundPlayer(float angle) { m_angleAroundPlayer = angle; }
 
@@ -66,6 +69,8 @@ public:
     bool isInPhotoView() const { return m_isPhotoView; }
 
     void rotate(glm::vec3 angles);
+
+    bool isInView(Entity* entity) const;
 
 };
 
