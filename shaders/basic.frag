@@ -22,7 +22,7 @@ void main() {
 
     float nDotl = dot(unitNormal, unitLightVector);
     // ensure that no surface is ever black, simulating ambient lighting
-    float brightness = max(nDotl, .3);
+    float brightness = nDotl < .3 ? .3 : nDotl;
 
     // diffuse lighting
     vec3 diffuse = brightness * u_lightColor;
@@ -45,6 +45,6 @@ void main() {
         discard;
     }
 
-    out_color =  vec4(diffuse, 1.0) * textureColor + vec4(finalSpecular, 1.0);
+    out_color = vec4(diffuse, 1.0) * textureColor;
     out_color = mix(vec4(u_skyColor, 1.0), out_color, v_visibility);
 }

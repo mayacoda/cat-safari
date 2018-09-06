@@ -54,6 +54,8 @@ int main() {
     glfwSetScrollCallback(window, scrollCallback);
     glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
+	std::cout << glGetString(GL_VERSION) << std::endl;
+
     clock_t currentTime = clock();
 
     // Game loop
